@@ -21,7 +21,6 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   site: 'https://tncrd.github.io',
-  base: '/tncrd.github.io',
   integrations: [
     expressiveCode({
       themes: ['github-light', 'github-dark'],
