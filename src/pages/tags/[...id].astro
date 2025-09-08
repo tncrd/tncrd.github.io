@@ -4,6 +4,7 @@ import Breadcrumbs from '@/components/Breadcrumbs.astro'
 import PageHead from '@/components/PageHead.astro'
 import Layout from '@/layouts/Layout.astro'
 import { getAllTags, getPostsByTag } from '@/lib/data-utils'
+import { Icon } from 'lucide-react'
 
 export async function getStaticPaths() {
   const tagMap = await getAllTags()
@@ -31,14 +32,21 @@ const { tag, posts } = Astro.props
     slot="head"
     title={`Posts tagged with "${tag}"`}
     description={`A collection of posts tagged with ${tag}.`}
-    noindex
   />
   <Breadcrumbs
     items={[
-      { href: '/tags', label: 'Tags', icon: 'lucide:tags' },
+      { href: '/tags', label: 'Areas of Interests', icon: 'lucide:tags' },
       { label: tag, icon: 'lucide:tag' },
     ]}
   />
+
+  <div class="flex flex-wrap items-center gap-2">
+    <h1 class="text-3xl font-medium">Posts tagged with</h1>
+    <span class="bg-secondary flex items-center gap-x-1 rounded-full px-4 py-2 text-2xl font-medium">
+      <span class=" -translate-x-0.5 inline-block"># </span>
+      {tag}
+    </span>
+  </div>
 
   <ul class="flex flex-col gap-y-4">
     {

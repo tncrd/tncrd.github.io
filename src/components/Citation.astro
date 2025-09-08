@@ -1,0 +1,56 @@
+---
+// Citation.astro
+// Props for both citation types
+const {
+  type = 'informal', // 'informal' or 'bibtex'
+  author,
+  title,
+  journal,
+  date,
+  url,
+  id,
+  year,
+  month,
+} = Astro.props;
+---
+
+{
+  type === 'informal' ? (
+    <div class="citation">
+      {author}. “{title}”. <em>{journal}</em> ({date}).{' '}
+      <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>.
+    </div>
+  ) : (
+    <pre class="bibtex">
+{`@article{${id},
+  title   = {${title}},
+  author  = {${author}},
+  journal = {${journal}},
+  year    = {${year}},
+  month   = {${month}},
+  url     = {${url}}
+}`}
+    </pre>
+  )
+}
+
+<style>
+  .citation {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-left: 4px solid #ccc;
+    background-color: #f9f9f9;
+    font-size: 0.9rem;
+  }
+
+  .bibtex {
+    background-color: #f4f4f4;
+    padding: 0.5rem;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.8rem; /* Matches normal text size */
+    line-height: 1.2; /* Tighter line spacing */
+    margin-top: 1rem;
+    white-space: pre; /* Preserves indentation */
+  }
+</style>

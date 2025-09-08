@@ -3,8 +3,8 @@ title: 'The State of Static Blogs in 2024'
 description: 'There should not be a single reason why you would need a command palette search bar to find a blog post on your own site.'
 date: 2024-07-25
 tags: ['v1.0.0']
-image: './banner.png'
 authors: ['enscribe']
+draft: true
 ---
 
 ## Introduction
@@ -23,7 +23,7 @@ This is a non-exhaustive list of features I believe are essential for a friction
 - A dedicated typography CSS file for fine-grained control over the presentation of prose text. Although [Tailwind Typography](https://github.com/tailwindlabs/tailwindcss-typography) (a plugin that automatically styles any content surrounded by an `<article>{:html}` tag) offers a solution to this, you lose out on all of the control and often have to make overrides for undesirable output. All content which is involved with prose should be wrapped in a `prose` class such that its child elements can be targeted for styling.
 - [Expressive Code](https://expressive-code.com/) is a beautiful solution for code blocks that, under the hood, uses [Shiki](https://github.com/shikijs/shiki) for syntax highlighting. Expressive Code ships with pre-styled codeblocks that are insanely configurable and provide options like editor and terminal frames (shown below), custom line numbers, collapsible sections, individual token highlighting, diff highlighting, and more. To use these for any provided codeblock, simply add any of the following props after the codeblock's backticks:
 
-  ````mdx showLineNumbers=false collapse={2-42}
+  ```mdx showLineNumbers=false collapse={2-42}
   ```ts title="example.ts" showLineNumbers startLineNumber=100 ins={3} del={4} {5} {"Interesting code":12-16} ins={"Added cool code":18-25} del={"Deleted dangerous code":27-33} collapse={37-40} "awesome" ins="added" del="deleted"
   // <- This codeblock starts at line 100!
 
@@ -178,53 +178,52 @@ Within the blog itself (as in the layout, appearance, and navigation) are featur
 - Each tag will also have their own page, which lists all of the posts under that tag!
 - $\LaTeX$ is fully supported with [KaTeX](https://katex.org/):
 
-  <blockquote>
+<blockquote>
 
-  To solve the cubic equation $t^3 + pt + q = 0$ (where the real numbers
-  $p, q$ satisfy ${4p^3 + 27q^2} > 0$) one can use Cardano's formula:
+To solve the cubic equation $t^3 + pt + q = 0$ 
+ where the real numbers $p, q$ satisfy $(4p^3 + 27q^2) > 0$ ) one can use Cardano's formula:
+ 
+$$
+  \sqrt[{3}]{
+    - \frac{q}{2} + \sqrt{\frac{q^2}{4} + \frac{p^3}{27}}
+  }
+  +
+  \sqrt[{3}]{
+    -\frac{q}{2}
+    -\sqrt{\frac{q^2}{4} + \frac{p^3}{27}}
+  }
+$$
 
-  $$
-    \sqrt[{3}]{
-      -\frac{q}{2}
-      +\sqrt{\frac{q^2}{4} + {\frac{p^{3}}{27}}}
-    }+
-    \sqrt[{3}]{
-      -\frac{q}{2}
-      -\sqrt{\frac{q^2}{4} + {\frac{p^{3}}{27}}}
-    }
-  $$
+For any $u_1, \dots, u_n \in \mathbb{C}$ and
+$v_1, \dots, v_n \in \mathbb{C}$, the Cauchy–Bunyakovsky–Schwarz
+inequality can be written as follows:
 
-  For any $u_1, \dots, u_n \in \mathbb{C}$ and
-  $v_1, \dots, v_n \in \mathbb{C}$, the Cauchy–Bunyakovsky–Schwarz
-  inequality can be written as follows:
+$$
+  \left| \sum_{k=1}^n {u_k \bar{v_k}} \right|^2
+  \leq{
+    \left( \sum_{k=1}^n {|u_k|} \right)^2
+    \left( \sum_{k=1}^n {|v_k|} \right)^2
+  }
+$$
 
-  $$
-    \left| \sum_{k=1}^n {u_k \bar{v_k}} \right|^2
-    \leq
-    {
-      \left( \sum_{k=1}^n {|u_k|} \right)^2
-      \left( \sum_{k=1}^n {|v_k|} \right)^2
-    }
-  $$
+Finally, the determinant of a Vandermonde matrix can be calculated
+using the following expression:
 
-  Finally, the determinant of a Vandermonde matrix can be calculated
-  using the following expression:
+$$
+  \begin{vmatrix}
+  1 & x_1 & x_1^2 & \dots & x_1^{n-1} \\
+  1 & x_2 & x_2^2 & \dots & x_2^{n-1} \\
+  1 & x_3 & x_3^2 & \dots & x_3^{n-1} \\
+  \vdots & \vdots & \vdots & \ddots & \vdots \\
+  1 & x_n & x_n^2 & \dots & x_n^{n-1} \\
+  \end{vmatrix}
+  = {\prod_{1 \leq {i,j} \leq n} {(x_i - x_j)}}
+$$
 
-  $$
-    \begin{vmatrix}
-    1 & x_1 & x_1^2 & \dots & x_1^{n-1} \\
-    1 & x_2 & x_2^2 & \dots & x_2^{n-1} \\
-    1 & x_3 & x_3^2 & \dots & x_3^{n-1} \\
-    \vdots & \vdots & \vdots & \ddots & \vdots \\
-    1 & x_n & x_n^2 & \dots & x_n^{n-1} \\
-    \end{vmatrix}
-    = {\prod_{1 \leq {i,j} \leq n} {(x_i - x_j)}}
-  $$
+—<cite>[Three famous mathematical formulas](https://developer.mozilla.org/en-US/docs/Learn/MathML/First_steps/Three_famous_mathematical_formulas) (Mozilla Docs)</cite>
 
-  —<cite>[Three famous mathematical formulas](https://developer.mozilla.org/en-US/docs/Learn/MathML/First_steps/Three_famous_mathematical_formulas) (Mozilla Docs)</cite>
-
-  </blockquote>
-
+</blockquote>
+  
 ## Foregoing some slop
 
 - Goodbye, [ESLint](https://eslint.org/)! There have been so many occasions where I've had to deal with blogging templates with in-built pre-commit hooks which enforce contrived and arbitrary linting rules that, frankly, I couldn't be bothered with. Obviously, linting is awesome for ensuring consistency and best practice, but that's for shared and large codebases. You're dealing with, at most, your MDX blog posts and some interior fetching. It's just not worth the headache.
