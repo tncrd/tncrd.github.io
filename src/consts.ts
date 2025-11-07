@@ -32,12 +32,12 @@ export const NAV_LINKS: SocialLink[] = [
 
 export const SOCIAL_LINKS: SocialLink[] = [
   {
-    href: 'https://github.com/',
+    href: 'https://github.com/tncrd',
     label: 'GitHub',
   },
   {
-    href: 'https://twitter.com/',
-    label: 'Twitter',
+    href: 'https://instagram.com/',
+    label: 'Instagram',
   },
   {
     href: '',
