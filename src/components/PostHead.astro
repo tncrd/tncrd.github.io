@@ -13,7 +13,9 @@ const { post } = Astro.props
 const title = post.data.title || SITE.title
 const description = post.data.description || SITE.description
 const ogImage = post.data.image
-  ? new URL((await getImage({ src: post.data.image })).src, Astro.site)
+  ? typeof post.data.image === 'string'
+    ? new URL(post.data.image, Astro.site)
+    : new URL((await getImage({ src: post.data.image })).src, Astro.site)
   : new URL('/1200x630.png', Astro.site)
 const author =
   post.data.authors && post.data.authors.length > 0
