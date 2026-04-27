@@ -1,0 +1,102 @@
+---
+// Parallel-path pipeline diagram
+// Reads left → right: data source | stages (fork at SFT) | eval
+---
+
+<figure
+  class="not-prose my-8 overflow-x-auto"
+  role="img"
+  aria-label="Training pipeline: NuminaMath-CoT splits into three disjoint slices. SFT trains first; DPO and GRPO are parallel second stages from the same SFT checkpoint. All four checkpoints evaluated on MATH-500 levels 3–5."
+>
+  <div class="flex min-w-[38rem] gap-4 font-mono text-[11px] leading-snug">
+
+    {/* ── Data source ─────────────────────────────────────────── */}
+    <div class="shrink-0">
+      <div class="mb-1.5 text-[9px] uppercase tracking-widest text-muted-foreground">source</div>
+      <div class="flex h-[calc(100%-1.5rem-6px)] flex-col justify-between rounded-md border border-border bg-muted px-3 py-3 text-muted-foreground">
+        <div class="mb-2 font-semibold text-foreground">NuminaMath-CoT</div>
+        <div class="flex flex-1 flex-col justify-around gap-0 border-l-2 border-border pl-2.5">
+          <div>
+            <div class="text-foreground/80">rows 0–8k</div>
+            <div class="text-[9px] text-muted-foreground/60">SFT demo set</div>
+          </div>
+          <div>
+            <div class="text-foreground/80">rows 8k–10k</div>
+            <div class="text-[9px] text-muted-foreground/60">DPO pair pool</div>
+          </div>
+          <div>
+            <div class="text-foreground/80">rows 10k+</div>
+            <div class="text-[9px] text-muted-foreground/60">GRPO prompt pool</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* ── Arrow ───────────────────────────────────────────────── */}
+    <div class="flex items-center pt-6 text-muted-foreground/50">→</div>
+
+    {/* ── Training stages (tree) ──────────────────────────────── */}
+    <div class="flex-1">
+      <div class="mb-1.5 text-[9px] uppercase tracking-widest text-muted-foreground">training</div>
+      <div class="flex flex-col gap-2">
+
+        {/* Base — no fine-tuning */}
+        <div class="rounded border border-dashed border-border px-2.5 py-2 text-muted-foreground/60">
+          <span class="font-semibold text-muted-foreground/80">Qwen3.5-0.8B-Base</span>
+          <span class="ml-2 text-[9px]">pretrained only · no fine-tuning</span>
+        </div>
+
+        {/* SFT */}
+        <div class="rounded border border-border bg-secondary px-2.5 py-2 text-secondary-foreground">
+          <span class="font-semibold">SFT</span>
+          <span class="ml-2 text-[9px] text-muted-foreground">LoRA r=16 · 8k demos · 2 epochs</span>
+        </div>
+
+        {/* Fork: SFT → {DPO, GRPO} */}
+        <div class="flex gap-0">
+          {/* Fork bar — left border + two horizontal ticks */}
+          <div class="relative ml-4 mr-2 w-4 shrink-0">
+            <div class="absolute left-0 top-0 bottom-0 border-l border-border"></div>
+            <div class="absolute left-0 top-[calc(50%-22px)] w-full border-t border-border"></div>
+            <div class="absolute left-0 top-[calc(50%+22px)] w-full border-t border-border"></div>
+          </div>
+
+          {/* DPO + GRPO */}
+          <div class="flex flex-1 flex-col gap-2">
+            <div class="rounded border border-border bg-secondary px-2.5 py-2 text-secondary-foreground">
+              <span class="font-semibold">DPO</span>
+              <span class="ml-2 text-[9px] text-muted-foreground">707 pairs · β=0.3 · lr=1e-6</span>
+            </div>
+            <div class="rounded border border-accent/30 bg-accent/15 px-2.5 py-2 text-foreground dark:bg-accent/20">
+              <span class="font-semibold">GRPO</span>
+              <span class="ml-2 text-[9px] text-muted-foreground">420 prompts · 300 steps · lr=5e-6</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    {/* ── Arrow ───────────────────────────────────────────────── */}
+    <div class="flex items-center pt-6 text-muted-foreground/50">→</div>
+
+    {/* ── Eval ────────────────────────────────────────────────── */}
+    <div class="shrink-0">
+      <div class="mb-1.5 text-[9px] uppercase tracking-widest text-muted-foreground">eval</div>
+      <div class="flex h-[calc(100%-1.5rem-6px)] items-center rounded-md border border-border bg-muted px-3 py-3 text-muted-foreground">
+        <div>
+          <div class="font-semibold text-foreground">MATH-500</div>
+          <div class="mt-1.5 text-[9px]">levels 3–5</div>
+          <div class="text-[9px]">n = 300</div>
+          <div class="text-[9px]">greedy + T=0.7</div>
+          <div class="text-[9px]">seed 42</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <figcaption class="mt-2 font-sans text-xs text-muted-foreground">
+    DPO and GRPO are independent second stages, both launched from the SFT checkpoint. The fork bar shows they share the same starting point.
+  </figcaption>
+</figure>

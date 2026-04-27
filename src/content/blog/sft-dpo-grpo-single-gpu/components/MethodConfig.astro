@@ -1,0 +1,116 @@
+---
+type Method = "sft" | "dpo" | "grpo";
+interface Props { method: Method }
+const { method } = Astro.props;
+
+type Param = { label: string; value: string; note?: string };
+type Group = { name: string; params: Param[] };
+
+const configs: Record<Method, { label: string; groups: Group[] }> = {
+  sft: {
+    label: "SFT",
+    groups: [
+      {
+        name: "optimizer",
+        params: [
+          { label: "lr",      value: "2e-4" },
+          { label: "epochs",  value: "2" },
+          { label: "batch",   value: "2 × 8 = 16", note: "grad_accum" },
+          { label: "seq_len", value: "2048" },
+        ],
+      },
+      {
+        name: "LoRA",
+        params: [
+          { label: "rank",    value: "16" },
+          { label: "alpha",   value: "32" },
+          { label: "dropout", value: "0.05" },
+        ],
+      },
+    ],
+  },
+  dpo: {
+    label: "DPO",
+    groups: [
+      {
+        name: "method",
+        params: [
+          { label: "β",       value: "0.3",   note: "KL penalty" },
+          { label: "pairs",   value: "707",   note: "after format filter" },
+          { label: "rollouts/prompt", value: "8 @ T=0.8" },
+        ],
+      },
+      {
+        name: "optimizer",
+        params: [
+          { label: "lr",     value: "1e-6" },
+          { label: "epochs", value: "1" },
+          { label: "batch",  value: "1 × 8 = 8", note: "grad_accum" },
+        ],
+      },
+      {
+        name: "LoRA",
+        params: [
+          { label: "rank",   value: "8",  note: "½ of SFT — ~700 pairs" },
+          { label: "alpha",  value: "16" },
+        ],
+      },
+    ],
+  },
+  grpo: {
+    label: "GRPO",
+    groups: [
+      {
+        name: "method",
+        params: [
+          { label: "G (group size)", value: "8" },
+          { label: "temperature",    value: "0.8" },
+          { label: "prompts",        value: "420", note: "filtered from 1000" },
+          { label: "steps",          value: "300" },
+        ],
+      },
+      {
+        name: "optimizer",
+        params: [
+          { label: "lr",    value: "5e-6" },
+          { label: "batch", value: "4 × 4 = 16", note: "grad_accum" },
+        ],
+      },
+      {
+        name: "LoRA",
+        params: [
+          { label: "rank",  value: "16" },
+          { label: "alpha", value: "32" },
+        ],
+      },
+    ],
+  },
+};
+
+const m = configs[method];
+const tone = method === "grpo"
+  ? "bg-accent/15 dark:bg-accent/20 border-accent/30 text-foreground"
+  : "bg-secondary border-border text-secondary-foreground";
+---
+
+<div class={["my-6 rounded-lg border px-4 py-3 font-mono text-[11px] leading-snug", tone].join(" ")}>
+  <div class="mb-2.5 text-[9px] font-sans uppercase tracking-widest text-muted-foreground">
+    {m.label} — run config
+  </div>
+  <div class="flex flex-wrap gap-x-8 gap-y-2">
+    {m.groups.map((g) => (
+      <div>
+        <div class="mb-1 text-[9px] uppercase tracking-wider text-muted-foreground/70">{g.name}</div>
+        <dl class="space-y-0.5">
+          {g.params.map((p) => (
+            <div class="flex items-baseline gap-2">
+              <dt class="text-muted-foreground">{p.label}</dt>
+              <dd class="font-semibold">{p.value}</dd>
+              {p.note && <span class="text-[9px] text-muted-foreground/60">{p.note}</span>}
+            </div>
+          ))}
+        </dl>
+      </div>
+    ))}
+  </div>
+</div>

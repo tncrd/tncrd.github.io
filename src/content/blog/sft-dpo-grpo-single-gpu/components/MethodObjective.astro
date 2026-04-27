@@ -1,0 +1,47 @@
+---
+import katex from "katex";
+
+type Method = "sft" | "dpo" | "grpo";
+interface Props { method: Method }
+const { method } = Astro.props;
+
+const data: Record<Method, { name: string; tagline: string; objective: string; glyph: string }> = {
+  sft: {
+    name: "SFT",
+    tagline: "Imitate good reasoning, no notion of better.",
+    objective: String.raw`-\,\mathbb{E}_{(x,y)\sim D_{\mathrm{demo}}}\bigl[\sum_t \log \pi_\theta(y_t \mid x, y_{<t})\bigr]`,
+    glyph: "↗",
+  },
+  dpo: {
+    name: "DPO",
+    tagline: "Re-rank toward preferred completions, KL-anchored to SFT.",
+    objective: String.raw`-\,\log \sigma\!\bigl(\beta\,\log\tfrac{\pi_\theta(y_w|x)}{\pi_{\mathrm{ref}}(y_w|x)} - \beta\,\log\tfrac{\pi_\theta(y_l|x)}{\pi_{\mathrm{ref}}(y_l|x)}\bigr)`,
+    glyph: "⚖",
+  },
+  grpo: {
+    name: "GRPO",
+    tagline: "Sharpen sampling toward verifiable-reward winners within each group.",
+    objective: String.raw`-\,\mathbb{E}\bigl[A_i \log \pi_\theta(y_i|x)\bigr],\;\; A_i = \tfrac{r_i - \mu_g}{\sigma_g + \varepsilon}`,
+    glyph: "∴",
+  },
+};
+
+const m = data[method];
+const renderedMath = katex.renderToString(m.objective, { displayMode: true, throwOnError: false });
+---
+
+<div class={[
+  "my-6 rounded-xl border p-5",
+  method === "grpo"
+    ? "bg-accent/15 dark:bg-accent/20 text-foreground border-accent/30"
+    : "bg-secondary text-secondary-foreground border-border",
+].join(" ")}>
+  <div class="flex items-center gap-3">
+    <span class="text-2xl font-mono opacity-80" aria-hidden="true">{m.glyph}</span>
+    <div>
+      <div class="text-base font-semibold">{m.name}</div>
+      <div class="text-sm text-muted-foreground">{m.tagline}</div>
+    </div>
+  </div>
+  <div class="mt-3 overflow-x-auto text-sm" set:html={renderedMath} />
+</div>

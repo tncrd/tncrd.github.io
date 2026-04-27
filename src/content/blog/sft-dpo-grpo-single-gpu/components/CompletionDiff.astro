@@ -1,0 +1,43 @@
+---
+import problemA from "../completions/problem_a.json";
+import problemB from "../completions/problem_b.json";
+
+interface Props { problem: "a" | "b" }
+const { problem } = Astro.props;
+const data = problem === "a" ? problemA : problemB;
+
+const order = ["sft", "dpo", "grpo"] as const;
+const labels: Record<string, string> = {
+  sft: "SFT",
+  dpo: "DPO",
+  grpo: "GRPO",
+};
+const tones: Record<string, string> = {
+  sft: "bg-muted text-muted-foreground border-border",
+  dpo: "bg-secondary text-secondary-foreground border-border",
+  grpo: "bg-accent/15 dark:bg-accent/20 text-foreground border-accent/30",
+};
+---
+
+<figure class="my-8">
+  <figcaption class="mb-3 text-sm text-muted-foreground">
+    Problem ({data.label}, level {data.level}): {data.problem}
+    <span class="ml-2 italic opacity-80">— ground truth: <code>{data.ground_truth}</code></span>
+  </figcaption>
+  <div class="grid grid-cols-1 gap-3 md:grid-cols-3">
+    {order.map((method) => (
+      <div class={["rounded-lg border p-3", tones[method]].join(" ")}>
+        <header class="mb-2 flex items-center justify-between text-xs font-semibold">
+          <span>{labels[method]}</span>
+          <span class={[
+            "rounded-full px-2 py-0.5 text-[10px] font-mono bg-foreground/10 text-foreground",
+            data.annotations[method].startsWith("✓") ? "ring-1 ring-green-500/40" : "ring-1 ring-destructive/40",
+          ].join(" ")}>
+            {data.annotations[method]}
+          </span>
+        </header>
+        <pre class="whitespace-pre-wrap break-words font-mono text-[11px] leading-relaxed max-h-80 overflow-y-auto">{data.completions[method]}</pre>
+      </div>
+    ))}
+  </div>
+</figure>
