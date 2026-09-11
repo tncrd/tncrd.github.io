@@ -152,7 +152,9 @@
     /* Running text sits at a readable measure, but code, tables and display
        maths need the room — let them break out of it on wide screens. */
     @media (width >= 48rem) {
-      :where(pre, .expressive-code, table, .katex-display):not(
+      /* Direct children only. A descendant selector also caught <pre> nested
+         inside multi-column components, which then overflowed their column. */
+      & > :where(pre, .expressive-code, table, .katex-display):not(
           :where([class~='not-prose'], [class~='not-prose'] *)
         ) {
         @apply -mx-8 w-[calc(100%+4rem)];

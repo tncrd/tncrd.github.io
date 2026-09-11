@@ -1,6 +1,11 @@
 ---
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { cn, getHeadingMargin } from '@/lib/utils'
+import {
+  cn,
+  getHeadingEmphasis,
+  getHeadingMargin,
+  getMinDepth,
+} from '@/lib/utils'
 import type { MarkdownHeading } from 'astro'
 import { Icon } from 'astro-icon/components'
 
@@ -9,6 +14,7 @@ type Props = {
 }
 
 const { headings } = Astro.props
+const minDepth = getMinDepth(headings.map((h) => h.depth))
 ---
 
 {
@@ -72,7 +78,8 @@ const { headings } = Astro.props
                 <li
                   class={cn(
                     'px-4 text-sm',
-                    getHeadingMargin(heading.depth),
+                    getHeadingMargin(heading.depth, minDepth),
+                    getHeadingEmphasis(heading.depth, minDepth),
                     'text-foreground/60',
                   )}
                 >
@@ -142,7 +149,7 @@ const { headings } = Astro.props
     static build() {
       state.headings = Array.from(
         document.querySelectorAll<HTMLElement>(
-          '.prose h2, .prose h3, .prose h4, .prose h5, .prose h6',
+          '.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6',
         ),
       )
 

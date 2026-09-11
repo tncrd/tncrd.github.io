@@ -26,12 +26,23 @@ export function readingTime(wordCount: number): string {
   return `${readingTimeMinutes} min read`
 }
 
-export function getHeadingMargin(depth: number): string {
-  const margins: Record<number, string> = {
-    3: 'ml-4',
-    4: 'ml-8',
-    5: 'ml-12',
-    6: 'ml-16',
-  }
-  return margins[depth] || ''
+/**
+ * Indentation is relative to the shallowest heading in the post, not absolute.
+ * Posts here write top-level sections as `#` (h1) and sub-sections as `##`,
+ * but the template's own posts start at `##` — keying off the absolute depth
+ * left both of those flat.
+ */
+export function getHeadingMargin(depth: number, minDepth: number = 1): string {
+  const margins = ['', 'ml-4', 'ml-8', 'ml-12', 'ml-16']
+  const level = Math.max(0, Math.min(depth - minDepth, margins.length - 1))
+  return margins[level]
+}
+
+/** Weight the top level so the TOC reads as a hierarchy, not a flat list. */
+export function getHeadingEmphasis(depth: number, minDepth: number = 1): string {
+  return depth <= minDepth ? 'font-medium' : ''
+}
+
+export function getMinDepth(depths: number[]): number {
+  return depths.length ? Math.min(...depths) : 1
 }

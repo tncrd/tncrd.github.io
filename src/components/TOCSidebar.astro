@@ -2,7 +2,12 @@
 import { ScrollArea } from '@/components/ui/scroll-area'
 import type { TOCSection } from '@/lib/data-utils'
 import { getParentId, isSubpost } from '@/lib/data-utils'
-import { cn, getHeadingMargin } from '@/lib/utils'
+import {
+  cn,
+  getHeadingEmphasis,
+  getHeadingMargin,
+  getMinDepth,
+} from '@/lib/utils'
 
 type Props = {
   sections: TOCSection[]
@@ -12,6 +17,10 @@ type Props = {
 const { sections, currentPostId } = Astro.props
 const isCurrentSubpost = isSubpost(currentPostId)
 const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
+// Indentation is relative to this post's shallowest heading.
+const minDepth = getMinDepth(
+  sections.flatMap((section) => section.headings.map((h) => h.depth)),
+)
 ---
 
 {
@@ -51,7 +60,8 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
                       <li
                         class={cn(
                           'text-sm',
-                          getHeadingMargin(heading.depth),
+                          getHeadingMargin(heading.depth, minDepth),
+                          getHeadingEmphasis(heading.depth, minDepth),
                           isCurrentSubpost
                             ? 'text-foreground/40'
                             : 'text-foreground/60',
@@ -107,7 +117,8 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
                         <li
                           class={cn(
                             'text-xs',
-                            getHeadingMargin(heading.depth),
+                            getHeadingMargin(heading.depth, minDepth),
+                            getHeadingEmphasis(heading.depth, minDepth),
                             section.subpostId === currentPostId
                               ? 'text-foreground/60'
                               : 'text-foreground/30',
@@ -181,7 +192,7 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
     static build() {
       state.headings = Array.from(
         document.querySelectorAll<HTMLElement>(
-          '.prose h2, .prose h3, .prose h4, .prose h5, .prose h6',
+          '.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6',
         ),
       )
 
