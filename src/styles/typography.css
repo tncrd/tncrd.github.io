@@ -154,12 +154,23 @@
     /* Running text sits at a readable measure, but code, tables and display
        maths need the room — let them break out of it on wide screens. */
     @media (width >= 48rem) {
-      /* Direct children only. A descendant selector also caught <pre> nested
+      /* Code blocks are left-aligned and fill their container, so a symmetric
+         breakout is right for them.
+         Direct children only: a descendant selector also caught <pre> nested
          inside multi-column components, which then overflowed their column. */
-      & > :where(pre, .expressive-code, table, .katex-display):not(
+      & > :where(pre, .expressive-code):not(
           :where([class~='not-prose'], [class~='not-prose'] *)
         ) {
         @apply -mx-8 w-[calc(100%+4rem)];
+      }
+
+      /* Tables and display maths centre themselves on their natural width.
+         Only allow them past the measure — never shift them, or a table that
+         fits the column drifts left of the text it belongs to. */
+      & > :where(table, .katex-display):not(
+          :where([class~='not-prose'], [class~='not-prose'] *)
+        ) {
+        @apply max-w-[calc(100%+4rem)];
       }
     }
   }
