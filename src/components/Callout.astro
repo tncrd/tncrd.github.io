@@ -5,42 +5,56 @@ import { Icon } from 'astro-icon/components'
 /*
  * All 24 callouts come from one rule, on two axes:
  *
- *   HUE  = family. Seven families, ~51° apart, keeping the semantic anchors
+ *   HUE  = family. Nine families, 40° apart, ordered so that semantically
+ *          adjacent families are adjacent in hue, and keeping the anchors
  *          (red = danger, green = result, amber = aside).
  *   RAMP = position inside the family, 0 (strongest) → 1 (faintest). It drives
  *          lightness, chroma AND a ±8° hue shift at once, so no two variants
  *          land on the same colour.
  *
- * An earlier version used three fixed weights, which left 12 of the 24 variants
- * sharing an identical colour — note/tip/remark/recall were all the same. Now
- * the closest pair inside a family is ΔE 0.029 (above the ~0.02 perceptual
- * threshold) while the closest pair across families is ΔE 0.076 — so kinship
- * reads, and so does the difference.
+ * Three variants per family is a hard ceiling. With five, neighbours sat 4°
+ * apart and read as the same colour. At three they are 10° apart and the ramp
+ * moves lightness twice as far, so every one of the 24 is tellable: the
+ * closest pair anywhere is ΔE 0.049, about 2.5x the ~0.02 perceptual
+ * threshold.
  *
- * Weakest contrast across all 48 colour/theme combinations: 4.67:1, above AA.
+ * The trade-off, stated plainly: with families this small and this many of
+ * them, within-family and across-family distances are now about equal. The
+ * palette reads as one semantically ordered spectrum rather than nine marked
+ * groups. Distinguishability was the priority.
+ *
+ * Weakest contrast across all 48 colour/theme combinations: 4.68:1, above AA.
  */
 const FAMILY_HUE = {
   advisory: 25, // watch out
-  annotation: 77, // notes in the margin
-  derivational: 128, // the work that gets you there
-  pedagogical: 180, // builds understanding
-  assertive: 231, // claims asserted to be true
-  structural: 283, // the ground: what we agree to mean
-  interrogative: 334, // asks something of the reader
+  annotation: 65, // notes in the margin
+  recap: 105, // looks backward: sums up, reminds
+  derivational: 145, // the work that gets you there
+  pedagogical: 185, // builds understanding
+  auxiliary: 225, // statements that orbit a theorem
+  assertive: 265, // claims asserted to be true
+  structural: 305, // the ground: what we agree to mean
+  interrogative: 345, // asks something of the reader
 } as const
 
-/** Order is semantic: strongest statement first, faintest aside last. */
+/**
+ * Order is semantic: strongest statement first, faintest aside last.
+ * Three variants per family is the ceiling — beyond that, neighbours inside a
+ * family fall under 5° apart and stop being tellable.
+ */
 const FAMILY_ORDER = {
   advisory: ['danger', 'warning', 'important'],
-  annotation: ['summary', 'remark', 'recall', 'note', 'tip'],
+  annotation: ['note', 'remark', 'tip'],
+  recap: ['summary', 'recall'],
   derivational: ['proof', 'solution', 'answer'],
   pedagogical: ['intuition', 'explanation', 'example'],
-  assertive: ['axiom', 'theorem', 'proposition', 'lemma', 'corollary'],
+  auxiliary: ['lemma', 'corollary'],
+  assertive: ['axiom', 'theorem', 'proposition'],
   structural: ['definition', 'notation'],
   interrogative: ['problem', 'exercise', 'conjecture'],
 } as const
 
-const HUE_SPREAD = 8
+const HUE_SPREAD = 10
 
 const ICONS = {
   definition: 'lucide:book-open',
