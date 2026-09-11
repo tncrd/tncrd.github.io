@@ -31,3 +31,7 @@ teaser.pptx
 .claude
 .agents
 skills-lock.json
+
+# design skill artifacts
+_design/audits/
+_previews/
