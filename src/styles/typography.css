@@ -164,10 +164,18 @@
         @apply -mx-8 w-[calc(100%+4rem)];
       }
 
-      /* Tables and display maths centre themselves on their natural width.
-         Only allow them past the measure — never shift them, or a table that
-         fits the column drifts left of the text it belongs to. */
-      & > :where(table, .katex-display):not(
+      /* A table centres via margin-inline:auto, which only works while its
+         width is fit-content. Raising max-width alone replaced that and made
+         the table fill the column, leaving auto margins nothing to distribute
+         — so it read as left-aligned. Set the width explicitly and cap it. */
+      & > :where(table):not(
+          :where([class~='not-prose'], [class~='not-prose'] *)
+        ) {
+        @apply w-fit max-w-[calc(100%+4rem)];
+      }
+
+      /* KaTeX centres its own contents, so it just needs the extra room. */
+      & > :where(.katex-display):not(
           :where([class~='not-prose'], [class~='not-prose'] *)
         ) {
         @apply max-w-[calc(100%+4rem)];
