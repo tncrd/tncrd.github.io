@@ -1,17 +1,14 @@
 <title>Encadrés — système de couleur</title>
 <style>
 :root{--paper:#FAFAFB;--card:#FFF;--ink:#17161C;--ink-2:#43414F;--neutral:#6C6A78;
- --line:#E3E2E9;--brand:#524FFC;
+ --line:#E3E2E9;--brand:#524FFC;--ls:.45;--lf:.545;--cs:.152;--cf:.088;
  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
- --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif;
- --l-strong:.45;--c-strong:.15;--l-medium:.50;--c-medium:.12;--l-light:.55;--c-light:.09}
+ --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif}
 @media (prefers-color-scheme:dark){:root:not([data-theme=light]){
  --paper:#111015;--card:#191820;--ink:#F2F1F6;--ink-2:#BFBCCC;--neutral:#918EA0;
- --line:#2B2933;--brand:#A3A2E6;
- --l-strong:.82;--c-strong:.13;--l-medium:.77;--c-medium:.10;--l-light:.72;--c-light:.07}}
+ --line:#2B2933;--brand:#A3A2E6;--ls:.83;--lf:.695;--cs:.132;--cf:.072}}
 :root[data-theme=dark]{--paper:#111015;--card:#191820;--ink:#F2F1F6;--ink-2:#BFBCCC;
- --neutral:#918EA0;--line:#2B2933;--brand:#A3A2E6;
- --l-strong:.82;--c-strong:.13;--l-medium:.77;--c-medium:.10;--l-light:.72;--c-light:.07}
+ --neutral:#918EA0;--line:#2B2933;--brand:#A3A2E6;--ls:.83;--lf:.695;--cs:.132;--cf:.072}
 *{box-sizing:border-box}
 body{background:var(--paper);color:var(--ink);font-family:var(--sans);margin:0;line-height:1.6}
 .wrap{max-width:1000px;margin:0 auto;padding:0 20px 90px}
@@ -20,56 +17,56 @@ body{background:var(--paper);color:var(--ink);font-family:var(--sans);margin:0;l
  color:var(--neutral);margin:0 0 16px}
 h1{font-family:var(--mono);font-size:clamp(23px,3.6vw,32px);font-weight:600;
  letter-spacing:-.02em;margin:0 0 12px;text-wrap:balance}
-.lede{font-size:16px;color:var(--ink-2);max-width:64ch;margin:0}
+.lede{font-size:16px;color:var(--ink-2);max-width:66ch;margin:0}
 .axes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:26px}
 @media(max-width:700px){.axes{grid-template-columns:1fr}}
 .axis{border:1px solid var(--line);border-radius:3px;padding:13px 15px;background:var(--card)}
 .axis b{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
  color:var(--brand);display:block;margin-bottom:5px}
 .axis span{font-size:13.5px;color:var(--ink-2)}
-.fam{padding-top:42px}
+.co,.fam__dot{--l:calc(var(--ls) + (var(--lf) - var(--ls)) * var(--t));
+ --c:calc(var(--cs) + (var(--cf) - var(--cs)) * var(--t))}
+.fam{padding-top:40px}
 .fam__h{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
 .fam__dot{width:10px;height:10px;border-radius:50%;flex:none;align-self:center;
- background:oklch(var(--l-strong) var(--c-strong) var(--h))}
+ background:oklch(var(--l) var(--c) var(--h))}
 .fam h2{font-family:var(--mono);font-size:17px;font-weight:600;margin:0}
 .fam__hue{font-family:var(--mono);font-size:11px;color:var(--neutral);margin-left:auto}
 .fam__s{color:var(--ink-2);font-size:14px;margin:3px 0 14px}
 .fam__b{display:grid;gap:7px}
-.co{--l:var(--l-light);--c:var(--c-light);
- border-left:4px solid oklch(var(--l) var(--c) var(--h));
- background:oklch(var(--l) var(--c) var(--h)/.06);
- padding:9px 13px;border-radius:0 3px 3px 0}
-.co[data-w=strong]{--l:var(--l-strong);--c:var(--c-strong)}
-.co[data-w=medium]{--l:var(--l-medium);--c:var(--c-medium)}
-.co__l{display:flex;align-items:baseline;gap:8px}
+.co{border-left:4px solid oklch(var(--l) var(--c) var(--h));
+ background:oklch(var(--l) var(--c) var(--h)/.06);padding:9px 13px;border-radius:0 3px 3px 0}
+.co__l{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
 .co__n{font-weight:600;font-size:13.5px;color:oklch(var(--l) var(--c) var(--h));
  text-transform:capitalize}
-.co__w{font-family:var(--mono);font-size:10px;color:var(--neutral);letter-spacing:.06em}
+.co__m{font-family:var(--mono);font-size:10px;color:var(--neutral);margin-left:auto;
+ font-variant-numeric:tabular-nums}
 .co__d{margin:2px 0 0;font-size:12.5px;color:var(--ink-2)}
 .note{border-left:2px solid var(--brand);padding:2px 0 2px 14px;color:var(--ink-2);
- font-size:14px;max-width:70ch;margin:44px 0 0}
-hr{border:0;border-top:1px solid var(--line);margin:44px 0 0}
+ font-size:14px;max-width:72ch;margin:42px 0 0}
+hr{border:0;border-top:1px solid var(--line);margin:42px 0 0}
 </style>
 <div class="wrap">
 <header class="mast">
-<p class="eyebrow">Encadrés · 24 variantes · une seule règle</p>
+<p class="eyebrow">Encadrés · 24 variantes · 24 couleurs distinctes</p>
 <h1>Système de couleur des encadrés</h1>
-<p class="lede">Tu voulais de la couleur et une logique unique pour toutes. Le système
-tient sur deux axes : la teinte dit <em>quel genre de chose</em> c'est, l'intensité dit
-<em>quel poids</em> elle a dans sa famille. Rien n'est choisi au cas par cas.</p>
+<p class="lede">La version précédente laissait <strong>12 variantes sur 24</strong> avec
+une couleur strictement identique à une autre — <code>note</code>, <code>tip</code>,
+<code>remark</code> et <code>recall</code> étaient les quatre mêmes. Corrigé : chaque
+variante a désormais sa propre couleur, sans casser la parenté par famille.</p>
 <div class="axes">
-<div class="axis"><b>Axe 1 — Teinte</b><span>Six familles, écartées de 60°. C'est le
-minimum pour que deux filets de 4px restent distinguables : l'ancien groupement en
-laissait deux à 21°.</span></div>
-<div class="axis"><b>Axe 2 — Intensité</b><span>Trois poids. <code>axiom</code> et
-<code>corollary</code> partagent leur teinte — ce sont deux assertions — mais l'axiome
-est énoncé plus fort. C'est vrai des mathématiques, pas seulement du design.</span></div>
+<div class="axis"><b>Axe 1 — Teinte</b><span>Sept familles, ~51° d'écart, en gardant les
+ancrages sémantiques : rouge = danger, vert = résultat, ambre = note de marge.</span></div>
+<div class="axis"><b>Axe 2 — Rampe</b><span>La position dans la famille (0 = le plus
+affirmé, 1 = le plus discret) pilote d'un seul coup la clarté, le chroma <em>et</em> un
+décalage de ±8° — c'est ce qui évite les doublons.</span></div>
 </div>
 </header>
-<section class="fam"><header class="fam__h"><span class="fam__dot" style="--h:265"></span><h2>structural</h2><span class="fam__hue">teinte 265°</span></header><p class="fam__s">Le socle — ce dont on convient du sens</p><div class="fam__b"><div class="co" data-w="strong" style="--h:265"><div class="co__l"><span class="co__n">definition</span><span class="co__w">fort</span></div><p class="co__d">Poser un objet, un terme</p></div><div class="co" data-w="medium" style="--h:265"><div class="co__l"><span class="co__n">notation</span><span class="co__w">moyen</span></div><p class="co__d">Fixer une écriture</p></div></div></section><section class="fam"><header class="fam__h"><span class="fam__dot" style="--h:205"></span><h2>assertive</h2><span class="fam__hue">teinte 205°</span></header><p class="fam__s">Ce qui est affirmé vrai</p><div class="fam__b"><div class="co" data-w="strong" style="--h:205"><div class="co__l"><span class="co__n">axiom</span><span class="co__w">fort</span></div><p class="co__d">Admis sans preuve</p></div><div class="co" data-w="strong" style="--h:205"><div class="co__l"><span class="co__n">theorem</span><span class="co__w">fort</span></div><p class="co__d">Le résultat central</p></div><div class="co" data-w="medium" style="--h:205"><div class="co__l"><span class="co__n">proposition</span><span class="co__w">moyen</span></div><p class="co__d">Un résultat secondaire</p></div><div class="co" data-w="light" style="--h:205"><div class="co__l"><span class="co__n">lemma</span><span class="co__w">léger</span></div><p class="co__d">Outil intermédiaire</p></div><div class="co" data-w="light" style="--h:205"><div class="co__l"><span class="co__n">corollary</span><span class="co__w">léger</span></div><p class="co__d">Conséquence directe</p></div></div></section><section class="fam"><header class="fam__h"><span class="fam__dot" style="--h:145"></span><h2>derivational</h2><span class="fam__hue">teinte 145°</span></header><p class="fam__s">Le travail qui y mène</p><div class="fam__b"><div class="co" data-w="strong" style="--h:145"><div class="co__l"><span class="co__n">proof</span><span class="co__w">fort</span></div><p class="co__d">La démonstration</p></div><div class="co" data-w="medium" style="--h:145"><div class="co__l"><span class="co__n">solution</span><span class="co__w">moyen</span></div><p class="co__d">Résolution détaillée</p></div><div class="co" data-w="light" style="--h:145"><div class="co__l"><span class="co__n">answer</span><span class="co__w">léger</span></div><p class="co__d">Le résultat seul</p></div></div></section><section class="fam"><header class="fam__h"><span class="fam__dot" style="--h:85"></span><h2>pedagogical</h2><span class="fam__hue">teinte 85°</span></header><p class="fam__s">Ce qui aide à retenir</p><div class="fam__b"><div class="co" data-w="strong" style="--h:85"><div class="co__l"><span class="co__n">intuition</span><span class="co__w">fort</span></div><p class="co__d">Pourquoi ça marche</p></div><div class="co" data-w="strong" style="--h:85"><div class="co__l"><span class="co__n">summary</span><span class="co__w">fort</span></div><p class="co__d">Ce qu'il faut retenir</p></div><div class="co" data-w="medium" style="--h:85"><div class="co__l"><span class="co__n">example</span><span class="co__w">moyen</span></div><p class="co__d">Un cas concret</p></div><div class="co" data-w="medium" style="--h:85"><div class="co__l"><span class="co__n">explanation</span><span class="co__w">moyen</span></div><p class="co__d">Développer un point</p></div><div class="co" data-w="light" style="--h:85"><div class="co__l"><span class="co__n">recall</span><span class="co__w">léger</span></div><p class="co__d">Rappel d'un acquis</p></div><div class="co" data-w="light" style="--h:85"><div class="co__l"><span class="co__n">remark</span><span class="co__w">léger</span></div><p class="co__d">Observation de côté</p></div><div class="co" data-w="light" style="--h:85"><div class="co__l"><span class="co__n">note</span><span class="co__w">léger</span></div><p class="co__d">Précision</p></div><div class="co" data-w="light" style="--h:85"><div class="co__l"><span class="co__n">tip</span><span class="co__w">léger</span></div><p class="co__d">Astuce pratique</p></div></div></section><section class="fam"><header class="fam__h"><span class="fam__dot" style="--h:325"></span><h2>interrogative</h2><span class="fam__hue">teinte 325°</span></header><p class="fam__s">Ce qu'on te demande</p><div class="fam__b"><div class="co" data-w="strong" style="--h:325"><div class="co__l"><span class="co__n">problem</span><span class="co__w">fort</span></div><p class="co__d">Un problème posé</p></div><div class="co" data-w="medium" style="--h:325"><div class="co__l"><span class="co__n">exercise</span><span class="co__w">moyen</span></div><p class="co__d">À faire soi-même</p></div><div class="co" data-w="light" style="--h:325"><div class="co__l"><span class="co__n">conjecture</span><span class="co__w">léger</span></div><p class="co__d">Question ouverte</p></div></div></section><section class="fam"><header class="fam__h"><span class="fam__dot" style="--h:25"></span><h2>advisory</h2><span class="fam__hue">teinte 25°</span></header><p class="fam__s">Fais attention</p><div class="fam__b"><div class="co" data-w="strong" style="--h:25"><div class="co__l"><span class="co__n">danger</span><span class="co__w">fort</span></div><p class="co__d">Erreur grave</p></div><div class="co" data-w="medium" style="--h:25"><div class="co__l"><span class="co__n">warning</span><span class="co__w">moyen</span></div><p class="co__d">Piège courant</p></div><div class="co" data-w="light" style="--h:25"><div class="co__l"><span class="co__n">important</span><span class="co__w">léger</span></div><p class="co__d">À ne pas rater</p></div></div></section>
+<section class="fam"><header class="fam__h"><span class="fam__dot" style="--h:25;--t:0"></span><h2>advisory</h2><span class="fam__hue">25°</span></header><p class="fam__s">Fais attention</p><div class="fam__b"><div class="co" style="--h:17.0;--t:0.0"><div class="co__l"><span class="co__n">danger</span><span class="co__m">17.0° · rampe 0.00</span></div><p class="co__d">Erreur grave</p></div><div class="co" style="--h:25.0;--t:0.5"><div class="co__l"><span class="co__n">warning</span><span class="co__m">25.0° · rampe 0.50</span></div><p class="co__d">Piège courant</p></div><div class="co" style="--h:33.0;--t:1.0"><div class="co__l"><span class="co__n">important</span><span class="co__m">33.0° · rampe 1.00</span></div><p class="co__d">À ne pas rater</p></div></div></section><section class="fam"><header class="fam__h"><span class="fam__dot" style="--h:77;--t:0"></span><h2>annotation</h2><span class="fam__hue">77°</span></header><p class="fam__s">Notes en marge</p><div class="fam__b"><div class="co" style="--h:69.0;--t:0.0"><div class="co__l"><span class="co__n">summary</span><span class="co__m">69.0° · rampe 0.00</span></div><p class="co__d">Ce qu'il faut retenir</p></div><div class="co" style="--h:73.0;--t:0.25"><div class="co__l"><span class="co__n">remark</span><span class="co__m">73.0° · rampe 0.25</span></div><p class="co__d">Observation de côté</p></div><div class="co" style="--h:77.0;--t:0.5"><div class="co__l"><span class="co__n">recall</span><span class="co__m">77.0° · rampe 0.50</span></div><p class="co__d">Rappel d'un acquis</p></div><div class="co" style="--h:81.0;--t:0.75"><div class="co__l"><span class="co__n">note</span><span class="co__m">81.0° · rampe 0.75</span></div><p class="co__d">Précision</p></div><div class="co" style="--h:85.0;--t:1.0"><div class="co__l"><span class="co__n">tip</span><span class="co__m">85.0° · rampe 1.00</span></div><p class="co__d">Astuce pratique</p></div></div></section><section class="fam"><header class="fam__h"><span class="fam__dot" style="--h:128;--t:0"></span><h2>derivational</h2><span class="fam__hue">128°</span></header><p class="fam__s">Le travail qui y mène</p><div class="fam__b"><div class="co" style="--h:120.0;--t:0.0"><div class="co__l"><span class="co__n">proof</span><span class="co__m">120.0° · rampe 0.00</span></div><p class="co__d">La démonstration</p></div><div class="co" style="--h:128.0;--t:0.5"><div class="co__l"><span class="co__n">solution</span><span class="co__m">128.0° · rampe 0.50</span></div><p class="co__d">Résolution détaillée</p></div><div class="co" style="--h:136.0;--t:1.0"><div class="co__l"><span class="co__n">answer</span><span class="co__m">136.0° · rampe 1.00</span></div><p class="co__d">Le résultat seul</p></div></div></section><section class="fam"><header class="fam__h"><span class="fam__dot" style="--h:180;--t:0"></span><h2>pedagogical</h2><span class="fam__hue">180°</span></header><p class="fam__s">Construit la compréhension</p><div class="fam__b"><div class="co" style="--h:172.0;--t:0.0"><div class="co__l"><span class="co__n">intuition</span><span class="co__m">172.0° · rampe 0.00</span></div><p class="co__d">Pourquoi ça marche</p></div><div class="co" style="--h:180.0;--t:0.5"><div class="co__l"><span class="co__n">explanation</span><span class="co__m">180.0° · rampe 0.50</span></div><p class="co__d">Développer un point</p></div><div class="co" style="--h:188.0;--t:1.0"><div class="co__l"><span class="co__n">example</span><span class="co__m">188.0° · rampe 1.00</span></div><p class="co__d">Un cas concret</p></div></div></section><section class="fam"><header class="fam__h"><span class="fam__dot" style="--h:231;--t:0"></span><h2>assertive</h2><span class="fam__hue">231°</span></header><p class="fam__s">Ce qui est affirmé vrai</p><div class="fam__b"><div class="co" style="--h:223.0;--t:0.0"><div class="co__l"><span class="co__n">axiom</span><span class="co__m">223.0° · rampe 0.00</span></div><p class="co__d">Admis sans preuve</p></div><div class="co" style="--h:227.0;--t:0.25"><div class="co__l"><span class="co__n">theorem</span><span class="co__m">227.0° · rampe 0.25</span></div><p class="co__d">Le résultat central</p></div><div class="co" style="--h:231.0;--t:0.5"><div class="co__l"><span class="co__n">proposition</span><span class="co__m">231.0° · rampe 0.50</span></div><p class="co__d">Résultat secondaire</p></div><div class="co" style="--h:235.0;--t:0.75"><div class="co__l"><span class="co__n">lemma</span><span class="co__m">235.0° · rampe 0.75</span></div><p class="co__d">Outil intermédiaire</p></div><div class="co" style="--h:239.0;--t:1.0"><div class="co__l"><span class="co__n">corollary</span><span class="co__m">239.0° · rampe 1.00</span></div><p class="co__d">Conséquence directe</p></div></div></section><section class="fam"><header class="fam__h"><span class="fam__dot" style="--h:283;--t:0"></span><h2>structural</h2><span class="fam__hue">283°</span></header><p class="fam__s">Le socle : ce dont on convient du sens</p><div class="fam__b"><div class="co" style="--h:275.0;--t:0.0"><div class="co__l"><span class="co__n">definition</span><span class="co__m">275.0° · rampe 0.00</span></div><p class="co__d">Poser un objet, un terme</p></div><div class="co" style="--h:291.0;--t:1.0"><div class="co__l"><span class="co__n">notation</span><span class="co__m">291.0° · rampe 1.00</span></div><p class="co__d">Fixer une écriture</p></div></div></section><section class="fam"><header class="fam__h"><span class="fam__dot" style="--h:334;--t:0"></span><h2>interrogative</h2><span class="fam__hue">334°</span></header><p class="fam__s">Ce qu'on te demande</p><div class="fam__b"><div class="co" style="--h:326.0;--t:0.0"><div class="co__l"><span class="co__n">problem</span><span class="co__m">326.0° · rampe 0.00</span></div><p class="co__d">Un problème posé</p></div><div class="co" style="--h:334.0;--t:0.5"><div class="co__l"><span class="co__n">exercise</span><span class="co__m">334.0° · rampe 0.50</span></div><p class="co__d">À faire soi-même</p></div><div class="co" style="--h:342.0;--t:1.0"><div class="co__l"><span class="co__n">conjecture</span><span class="co__m">342.0° · rampe 1.00</span></div><p class="co__d">Question ouverte</p></div></div></section>
 <hr>
-<p class="note">Les 36 combinaisons (18 claires, 18 sombres) ont été mesurées contre
-leur fond : la plus faible est à <strong>4,66:1</strong>, au-dessus du seuil AA de 4,5:1
-pour du texte courant. Seul le libellé prend la teinte — le corps du texte reste dans la
-couleur de la prose, pour qu'un long passage ne devienne pas coloré.</p>
+<p class="note">Mesures sur les 48 combinaisons couleur × thème : contraste le plus
+faible <strong>4,67:1</strong> (seuil AA : 4,5). Paire la plus proche
+<em>dans</em> une famille : ΔE <strong>0,029</strong>, au-dessus du seuil de perception
+(~0,02). Paire la plus proche <em>entre</em> familles : ΔE <strong>0,076</strong>, soit
+2,6× plus éloignée — la parenté se voit, la distinction aussi. Zéro paire identique.</p>
 </div>

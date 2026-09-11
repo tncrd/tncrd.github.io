@@ -3,83 +3,101 @@ import { cn } from '@/lib/utils'
 import { Icon } from 'astro-icon/components'
 
 /*
- * One rule generates all 24 callouts, on two axes:
+ * All 24 callouts come from one rule, on two axes:
  *
- *   HUE       = what kind of thing this is (6 families, 60° apart — the
- *               minimum separation at which two 4px rules stay distinguishable)
- *   INTENSITY = how much weight it carries inside that family
+ *   HUE  = family. Seven families, ~51° apart, keeping the semantic anchors
+ *          (red = danger, green = result, amber = aside).
+ *   RAMP = position inside the family, 0 (strongest) → 1 (faintest). It drives
+ *          lightness, chroma AND a ±8° hue shift at once, so no two variants
+ *          land on the same colour.
  *
- * So `axiom` and `corollary` share a hue because they are both assertions,
- * but the axiom is stated more strongly — which is true of the mathematics,
- * not just the design. The icon distinguishes variants within a family.
+ * An earlier version used three fixed weights, which left 12 of the 24 variants
+ * sharing an identical colour — note/tip/remark/recall were all the same. Now
+ * the closest pair inside a family is ΔE 0.029 (above the ~0.02 perceptual
+ * threshold) while the closest pair across families is ΔE 0.076 — so kinship
+ * reads, and so does the difference.
  *
- * Every combination was checked against both backgrounds; the weakest pair
- * is 4.66:1, above the 4.5:1 AA threshold for body text.
+ * Weakest contrast across all 48 colour/theme combinations: 4.67:1, above AA.
  */
 const FAMILY_HUE = {
-  structural: 265, // the ground: what we agree to mean
-  assertive: 205, // claims asserted to be true
-  derivational: 145, // the work that gets you there
-  pedagogical: 85, // helps the reader hold on to it
-  interrogative: 325, // asks something of the reader
   advisory: 25, // watch out
+  annotation: 77, // notes in the margin
+  derivational: 128, // the work that gets you there
+  pedagogical: 180, // builds understanding
+  assertive: 231, // claims asserted to be true
+  structural: 283, // the ground: what we agree to mean
+  interrogative: 334, // asks something of the reader
 } as const
 
-type Family = keyof typeof FAMILY_HUE
-type Weight = 'strong' | 'medium' | 'light'
+/** Order is semantic: strongest statement first, faintest aside last. */
+const FAMILY_ORDER = {
+  advisory: ['danger', 'warning', 'important'],
+  annotation: ['summary', 'remark', 'recall', 'note', 'tip'],
+  derivational: ['proof', 'solution', 'answer'],
+  pedagogical: ['intuition', 'explanation', 'example'],
+  assertive: ['axiom', 'theorem', 'proposition', 'lemma', 'corollary'],
+  structural: ['definition', 'notation'],
+  interrogative: ['problem', 'exercise', 'conjecture'],
+} as const
 
-const calloutConfig = {
-  // structural
-  definition: { family: 'structural', weight: 'strong', icon: 'lucide:book-open' },
-  notation: { family: 'structural', weight: 'medium', icon: 'lucide:pen-tool' },
+const HUE_SPREAD = 8
 
-  // assertive — weight follows the standing of the statement
-  axiom: { family: 'assertive', weight: 'strong', icon: 'lucide:anchor' },
-  theorem: { family: 'assertive', weight: 'strong', icon: 'lucide:check-circle' },
-  proposition: { family: 'assertive', weight: 'medium', icon: 'lucide:file-text' },
-  lemma: { family: 'assertive', weight: 'light', icon: 'lucide:puzzle' },
-  corollary: { family: 'assertive', weight: 'light', icon: 'lucide:git-branch' },
+const ICONS = {
+  definition: 'lucide:book-open',
+  notation: 'lucide:pen-tool',
+  axiom: 'lucide:anchor',
+  theorem: 'lucide:check-circle',
+  proposition: 'lucide:file-text',
+  lemma: 'lucide:puzzle',
+  corollary: 'lucide:git-branch',
+  proof: 'lucide:check-square',
+  solution: 'lucide:check-circle-2',
+  answer: 'lucide:check',
+  intuition: 'lucide:lightbulb',
+  explanation: 'lucide:messages-square',
+  example: 'lucide:code',
+  summary: 'lucide:list',
+  remark: 'lucide:message-circle',
+  recall: 'lucide:rotate-ccw',
+  note: 'lucide:info',
+  tip: 'lucide:sparkles',
+  problem: 'lucide:alert-circle',
+  exercise: 'lucide:dumbbell',
+  conjecture: 'lucide:help-circle',
+  danger: 'lucide:shield-alert',
+  warning: 'lucide:alert-triangle',
+  important: 'lucide:message-square-warning',
+} as const
 
-  // derivational
-  proof: { family: 'derivational', weight: 'strong', icon: 'lucide:check-square' },
-  solution: { family: 'derivational', weight: 'medium', icon: 'lucide:check-circle-2' },
-  answer: { family: 'derivational', weight: 'light', icon: 'lucide:check' },
+type Variant = keyof typeof ICONS
 
-  // pedagogical
-  intuition: { family: 'pedagogical', weight: 'strong', icon: 'lucide:lightbulb' },
-  summary: { family: 'pedagogical', weight: 'strong', icon: 'lucide:list' },
-  example: { family: 'pedagogical', weight: 'medium', icon: 'lucide:code' },
-  explanation: { family: 'pedagogical', weight: 'medium', icon: 'lucide:messages-square' },
-  recall: { family: 'pedagogical', weight: 'light', icon: 'lucide:rotate-ccw' },
-  remark: { family: 'pedagogical', weight: 'light', icon: 'lucide:message-circle' },
-  note: { family: 'pedagogical', weight: 'light', icon: 'lucide:info' },
-  tip: { family: 'pedagogical', weight: 'light', icon: 'lucide:sparkles' },
-
-  // interrogative
-  problem: { family: 'interrogative', weight: 'strong', icon: 'lucide:alert-circle' },
-  exercise: { family: 'interrogative', weight: 'medium', icon: 'lucide:dumbbell' },
-  conjecture: { family: 'interrogative', weight: 'light', icon: 'lucide:help-circle' },
-
-  // advisory
-  danger: { family: 'advisory', weight: 'strong', icon: 'lucide:shield-alert' },
-  warning: { family: 'advisory', weight: 'medium', icon: 'lucide:alert-triangle' },
-  important: { family: 'advisory', weight: 'light', icon: 'lucide:message-square-warning' },
-} as const satisfies Record<
-  string,
-  { family: Family; weight: Weight; icon: string }
->
+/** Where a variant sits: which hue, and how far along its family's ramp. */
+function resolve(variant: Variant): { hue: number; ramp: number } {
+  for (const [family, names] of Object.entries(FAMILY_ORDER)) {
+    const list: readonly string[] = names
+    const i = list.indexOf(variant)
+    if (i === -1) continue
+    const ramp = list.length === 1 ? 0 : i / (list.length - 1)
+    const hue =
+      FAMILY_HUE[family as keyof typeof FAMILY_HUE] -
+      HUE_SPREAD +
+      2 * HUE_SPREAD * ramp
+    return { hue: Math.round(hue * 10) / 10, ramp: Math.round(ramp * 1000) / 1000 }
+  }
+  return { hue: FAMILY_HUE.annotation, ramp: 1 }
+}
 
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
 
 interface Props {
   title?: string
   class?: string
-  variant?: keyof typeof calloutConfig
+  variant?: Variant
   defaultOpen?: boolean
 }
 
 const { title, variant = 'note', defaultOpen = true, ...rest } = Astro.props
-const config = calloutConfig[variant]
+const { hue, ramp } = resolve(variant)
 ---
 
 <details
@@ -88,15 +106,14 @@ const config = calloutConfig[variant]
     rest.class,
     '[&[open]>summary_svg:last-child]:rotate-180 [&[open]>summary]:mb-3',
   )}
-  data-weight={config.weight}
-  style={`--callout-h: ${FAMILY_HUE[config.family]};`}
+  style={`--callout-h: ${hue}; --callout-t: ${ramp};`}
   {...rest}
   open={defaultOpen}
 >
   <summary
     class="callout__label flex cursor-pointer items-center font-medium [&::-webkit-details-marker]:hidden"
   >
-    <Icon name={config.icon} class="mr-2 size-4 shrink-0" />
+    <Icon name={ICONS[variant]} class="mr-2 size-4 shrink-0" />
     <span class="mr-2 font-medium">
       {capitalize(variant)}
       {title && <span class="font-normal opacity-70"> ({title})</span>}
@@ -110,42 +127,35 @@ const config = calloutConfig[variant]
 </details>
 
 <style>
-  /* Intensity: one step of lightness + chroma per weight. */
-  .callout[data-weight='strong'] {
-    --callout-l: 0.45;
-    --callout-c: 0.15;
-  }
-  .callout[data-weight='medium'] {
-    --callout-l: 0.5;
-    --callout-c: 0.12;
-  }
-  .callout[data-weight='light'] {
-    --callout-l: 0.55;
-    --callout-c: 0.09;
-  }
-
-  /* Dark mode lifts lightness and drops chroma so the same hue stays legible. */
-  :global([data-theme='dark']) .callout[data-weight='strong'] {
-    --callout-l: 0.82;
-    --callout-c: 0.13;
-  }
-  :global([data-theme='dark']) .callout[data-weight='medium'] {
-    --callout-l: 0.77;
-    --callout-c: 0.1;
-  }
-  :global([data-theme='dark']) .callout[data-weight='light'] {
-    --callout-l: 0.72;
-    --callout-c: 0.07;
-  }
-
+  /* Endpoints of the ramp. --callout-t interpolates between them, so a variant
+     only ever declares its hue and its position. */
   .callout {
+    --l-strong: 0.45;
+    --l-faint: 0.545;
+    --c-strong: 0.152;
+    --c-faint: 0.088;
+
+    --callout-l: calc(
+      var(--l-strong) + (var(--l-faint) - var(--l-strong)) * var(--callout-t)
+    );
+    --callout-c: calc(
+      var(--c-strong) + (var(--c-faint) - var(--c-strong)) * var(--callout-t)
+    );
     --callout-color: oklch(var(--callout-l) var(--callout-c) var(--callout-h));
+
     border-left-color: var(--callout-color);
     background: oklch(var(--callout-l) var(--callout-c) var(--callout-h) / 0.06);
   }
 
-  /* Only the label takes the hue — body text stays in the prose colour so long
-     passages don't become tinted. */
+  /* Dark ground: lift lightness, drop chroma — same hue, still legible. */
+  :global([data-theme='dark']) .callout {
+    --l-strong: 0.83;
+    --l-faint: 0.695;
+    --c-strong: 0.132;
+    --c-faint: 0.072;
+  }
+
+  /* Only the label takes the hue, so long passages don't become tinted. */
   .callout__label {
     color: var(--callout-color);
   }
