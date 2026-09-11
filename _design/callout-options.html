@@ -1,0 +1,232 @@
+<title>Encadrés — trois directions</title>
+<style>
+:root{
+  --paper:#FAFAFB;--card:#FFFFFF;--ink:#17161C;--ink-2:#43414F;
+  --neutral:#6C6A78;--line:#E3E2E9;--line-2:#D2D0DC;--brand:#524FFC;
+  --bad:#B3392F;--good:#1F6F52;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#111015;--card:#191820;--ink:#F2F1F6;--ink-2:#BFBCCC;
+  --neutral:#918EA0;--line:#2B2933;--line-2:#3A3845;--brand:#A3A2E6;
+  --bad:#E08A80;--good:#6FBF9C;}}
+:root[data-theme="dark"]{
+  --paper:#111015;--card:#191820;--ink:#F2F1F6;--ink-2:#BFBCCC;
+  --neutral:#918EA0;--line:#2B2933;--line-2:#3A3845;--brand:#A3A2E6;
+  --bad:#E08A80;--good:#6FBF9C;}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);
+  line-height:1.6;margin:0}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px 90px}
+.mast{padding:56px 0 32px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--neutral);margin:0 0 18px}
+h1{font-family:var(--mono);font-size:clamp(24px,4vw,34px);font-weight:600;
+  letter-spacing:-.02em;margin:0 0 12px;text-wrap:balance}
+.lede{font-size:16px;color:var(--ink-2);max-width:66ch;margin:0}
+section{padding-top:48px}
+h2{font-family:var(--mono);font-size:18px;font-weight:600;margin:0 0 6px;
+  display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.rec{font-family:var(--mono);font-size:10px;letter-spacing:.08em;padding:3px 7px;
+  border-radius:3px;background:var(--brand);color:var(--paper);font-weight:600}
+.intro{color:var(--ink-2);max-width:70ch;margin:0 0 22px;font-size:15px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
+@media(max-width:900px){.grid3{grid-template-columns:1fr}}
+.opt{border:1px solid var(--line);border-radius:3px;background:var(--card);
+  overflow:hidden;display:flex;flex-direction:column}
+.opt__h{font-family:var(--mono);font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;padding:9px 13px;border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;gap:8px;color:var(--neutral)}
+.opt__b{padding:14px 13px;flex:1}
+.scr{--s-bg:#FFFFFF;--s-fg:#0A0A0A;--s-mut:#737373;--s-sec:#F5F5F5;
+  background:var(--s-bg);color:var(--s-fg);border:1px solid var(--line-2);
+  border-radius:3px;padding:13px;font-size:13px}
+
+/* generic callout shell */
+.co{padding:7px 11px;margin-bottom:7px;font-size:12px;border-radius:0 3px 3px 0}
+.co b{font-weight:600;font-size:11.5px}
+.co p{margin:3px 0 0;font-size:11.5px;opacity:.85;line-height:1.5}
+
+/* current (broken) */
+.cur{border-left:4px solid}
+/* A — separated hues */
+.a{border-left:4px solid}
+/* B — editorial */
+.b{border-left:2px solid var(--s-line,#E5E5E5);background:transparent;padding-left:13px}
+.b b{font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:#737373;display:block;margin-bottom:2px}
+.b--warn{border-left-color:#A83634}
+.b--warn b{color:#A83634}
+/* C — three tiers */
+.c1{border-left:3px solid #0A0A0A;background:#0A0A0A08}
+.c1 b{color:#0A0A0A}
+.c2{border-left:3px solid #737373;background:transparent}
+.c2 b{color:#525252}
+.c3{border-left:3px solid #A83634;background:#A8363408}
+.c3 b{color:#A83634}
+
+.note{border-left:2px solid var(--brand);padding:2px 0 2px 14px;
+  color:var(--ink-2);font-size:14px;max-width:70ch;margin:20px 0 0}
+.hint{font-family:var(--mono);font-size:10.5px;color:var(--neutral);margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line)}
+th{font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--neutral);font-weight:600}
+td.n{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.fail{color:var(--bad);font-weight:600}.pass{color:var(--good);font-weight:600}
+.sw{display:inline-block;width:11px;height:11px;border-radius:2px;
+  vertical-align:-1px;margin-right:5px}
+hr{border:0;border-top:1px solid var(--line);margin:48px 0 0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+<header class="mast">
+  <p class="eyebrow">Encadrés · Trois directions · 11 sept. 2026</p>
+  <h1>Tu as raison, le regroupement ne tient pas</h1>
+  <p class="lede">J'ai réduit 25 teintes à 7, mais sans assez écarter celles que
+    j'ai gardées. Résultat : moins de variété <em>et</em> deux familles
+    indistinguables — dont la paire la plus fréquente de tout ton contenu.
+    Voici la mesure, puis trois sorties possibles.</p>
+</header>
+
+<section>
+  <h2>Le défaut, chiffré</h2>
+  <p class="intro">Écart de teinte entre familles voisines. En dessous de ~35°, deux
+    filets de 4px ne se distinguent plus à la lecture.</p>
+  <table>
+    <tr><th>Paire</th><th>Écart</th><th>Verdict</th></tr>
+    <tr>
+      <td><span class="sw" style="background:#0d9488"></span>theorem
+        → <span class="sw" style="background:#059669"></span>proof</td>
+      <td class="n">21,5°</td><td class="fail">indistinguables</td>
+    </tr>
+    <tr>
+      <td><span class="sw" style="background:#8b5cf6"></span>definition
+        → <span class="sw" style="background:#d946ef"></span>exercise</td>
+      <td class="n">29,5°</td><td class="fail">indistinguables</td>
+    </tr>
+    <tr>
+      <td><span class="sw" style="background:#ef4444"></span>danger
+        → <span class="sw" style="background:#f59e0b"></span>warning</td>
+      <td class="n">44,8°</td><td>limite</td>
+    </tr>
+  </table>
+  <p class="note"><strong>theorem</strong> et <strong>proof</strong> sont les deux
+    encadrés qu'un lecteur de maths voit le plus souvent l'un sous l'autre. Ce sont
+    exactement ceux que j'ai rendus identiques. C'est le défaut le plus grave de ma
+    proposition, et tu l'as vu sans avoir besoin de le mesurer.</p>
+</section>
+
+<hr>
+
+<section>
+  <h2>Les trois sorties</h2>
+  <p class="intro">Mêmes six encadrés, rendus selon chaque direction. Compare surtout
+    <strong>Theorem</strong> et <strong>Proof</strong>, collés l'un à l'autre.</p>
+
+  <div class="grid3">
+
+    <!-- A -->
+    <div class="opt">
+      <div class="opt__h"><span>A — Teintes écartées</span><span>6 couleurs</span></div>
+      <div class="opt__b">
+        <div class="scr">
+          <div class="co a" style="border-color:#385DB8;background:#385DB808">
+            <b style="color:#385DB8">Definition</b>
+            <p>A distribution F belongs to the max-domain of attraction…</p></div>
+          <div class="co a" style="border-color:#00788B;background:#00788B08">
+            <b style="color:#00788B">Theorem</b>
+            <p>Pickands–Balkema–de Haan: the excess distribution converges…</p></div>
+          <div class="co a" style="border-color:#107823;background:#10782308">
+            <b style="color:#107823">Proof</b>
+            <p>Let u → x_F. By the convergence-to-types theorem…</p></div>
+          <div class="co a" style="border-color:#8A5800;background:#8A580008">
+            <b style="color:#8A5800">Intuition</b>
+            <p>Past a high enough threshold, every tail looks the same.</p></div>
+          <div class="co a" style="border-color:#8C3F91;background:#8C3F9108">
+            <b style="color:#8C3F91">Exercise</b>
+            <p>Show that ξ = 0 gives the exponential case.</p></div>
+          <div class="co a" style="border-color:#A83634;background:#A8363408">
+            <b style="color:#A83634">Warning</b>
+            <p>A threshold chosen too low contaminates the fit.</p></div>
+        </div>
+        <p class="hint">60° d'écart minimum · garde la logique par famille ·
+          reste coloré</p>
+      </div>
+    </div>
+
+    <!-- B -->
+    <div class="opt">
+      <div class="opt__h"><span>B — Éditorial</span><span>1 couleur</span></div>
+      <div class="opt__b">
+        <div class="scr">
+          <div class="co b"><b>Definition</b>
+            <p>A distribution F belongs to the max-domain of attraction…</p></div>
+          <div class="co b" style="border-left-color:#0A0A0A"><b style="color:#0A0A0A">Theorem</b>
+            <p>Pickands–Balkema–de Haan: the excess distribution converges…</p></div>
+          <div class="co b"><b>Proof</b>
+            <p>Let u → x_F. By the convergence-to-types theorem… <span
+              style="float:right">▪</span></p></div>
+          <div class="co b"><b>Intuition</b>
+            <p>Past a high enough threshold, every tail looks the same.</p></div>
+          <div class="co b"><b>Exercise</b>
+            <p>Show that ξ = 0 gives the exponential case.</p></div>
+          <div class="co b b--warn"><b>Warning</b>
+            <p>A threshold chosen too low contaminates the fit.</p></div>
+        </div>
+        <p class="hint">label en petites capitales · filet appuyé = énoncé ·
+          ▪ clôt la preuve · couleur réservée aux alertes</p>
+      </div>
+    </div>
+
+    <!-- C -->
+    <div class="opt">
+      <div class="opt__h"><span>C — Trois registres</span><span>3 couleurs</span></div>
+      <div class="opt__b">
+        <div class="scr">
+          <div class="co c1"><b>Definition</b>
+            <p>A distribution F belongs to the max-domain of attraction…</p></div>
+          <div class="co c1"><b>Theorem</b>
+            <p>Pickands–Balkema–de Haan: the excess distribution converges…</p></div>
+          <div class="co c2"><b>Proof</b>
+            <p>Let u → x_F. By the convergence-to-types theorem…</p></div>
+          <div class="co c2"><b>Intuition</b>
+            <p>Past a high enough threshold, every tail looks the same.</p></div>
+          <div class="co c2"><b>Exercise</b>
+            <p>Show that ξ = 0 gives the exponential case.</p></div>
+          <div class="co c3"><b>Warning</b>
+            <p>A threshold chosen too low contaminates the fit.</p></div>
+        </div>
+        <p class="hint">appuyé = ce qu'il faut retenir · discret = ce qui aide ·
+          rouge = attention</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<section>
+  <h2>Ce que je recommande <span class="rec">OPTION B</span></h2>
+  <p class="intro">Pour une raison qui tient à ton site précisément, pas à une règle
+    générale.</p>
+  <p class="note">Ton blog est monochrome, composé en Geist, et illustré de Géricault,
+    Renoir et Fragonard. Six filets saturés y détonnent — c'est le « agressif » que tu
+    as senti. Et l'édition mathématique sérieuse (Bourbaki, les revues AMS) n'a jamais
+    distingué théorème et preuve par la couleur : elle le fait par le label en petites
+    capitales, l'italique de l'énoncé, et le ▪ qui clôt la démonstration. La couleur
+    des encadrés est une convention web, pas une convention mathématique.<br><br>
+    L'option B fait porter la distinction à la typographie — qui ne souffre d'aucun
+    problème d'écart de teinte — et garde la couleur là où elle a une vraie fonction :
+    l'avertissement. Elle survit aussi à l'impression, au daltonisme, et au mode sombre
+    sans réglage.</p>
+  <p class="intro" style="margin-top:20px"><strong>Si tu préfères la couleur</strong>,
+    prends A plutôt que l'existant : 60° d'écart minimum, theorem et proof enfin
+    séparés. C'est ma proposition d'origine, correctement exécutée cette fois.
+    <strong>C</strong> est le compromis : trois registres de lecture, pas vingt-cinq
+    étiquettes.</p>
+</section>
+</div>
