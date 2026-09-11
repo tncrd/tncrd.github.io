@@ -3,8 +3,8 @@ import type { IconMap, SocialLink, Site } from '@/types'
 export const SITE: Site = {
   title: 'My Numeri/que/ Garden',
   description:
-    'Un blog customisé avec Astro Erudite qui traite de computer science and artificial intelligence.',
-  href: '',
+    'A digital garden on computer science, machine learning and the mathematics underneath.',
+  href: 'https://tncrd.github.io',
   author: 'tncrd',
   locale: 'en-US',
   featuredPostCount: 3,
@@ -26,7 +26,7 @@ export const NAV_LINKS: SocialLink[] = [
   },
   {
     href: '/tags',
-    label: 'areas of interests',
+    label: 'areas of interest',
   },
 ]
 
@@ -34,14 +34,6 @@ export const SOCIAL_LINKS: SocialLink[] = [
   {
     href: 'https://github.com/tncrd',
     label: 'GitHub',
-  },
-  {
-    href: 'https://instagram.com/',
-    label: 'Instagram',
-  },
-  {
-    href: '',
-    label: 'Email',
   },
   {
     href: '/rss.xml',

@@ -1,0 +1,49 @@
+---
+import { cn } from '@/lib/utils'
+import { Icon } from 'astro-icon/components'
+
+type Stage = 'seedling' | 'growing' | 'evergreen'
+
+interface Props {
+  stage: Stage
+  class?: string
+}
+
+const { stage, class: className } = Astro.props
+
+// Deliberately quiet: this joins the existing metadata line rather than
+// competing with it. Only the dot carries hue.
+const STAGES: Record<Stage, { label: string; icon: string; dot: string; hint: string }> = {
+  seedling: {
+    label: 'Seedling',
+    icon: 'lucide:sprout',
+    dot: 'bg-muted-foreground/50',
+    hint: 'Rough notes — still forming, expect changes.',
+  },
+  growing: {
+    label: 'Growing',
+    icon: 'lucide:leaf',
+    dot: 'bg-brand/70',
+    hint: 'Developed, but still being revised.',
+  },
+  evergreen: {
+    label: 'Evergreen',
+    icon: 'lucide:trees',
+    dot: 'bg-brand',
+    hint: 'Settled — only small corrections expected.',
+  },
+}
+
+const { label, icon, dot, hint } = STAGES[stage]
+---
+
+<span
+  class={cn('flex items-center gap-x-1.5', className)}
+  title={hint}
+>
+  <span class={cn('size-1.5 shrink-0 rounded-full', dot)} aria-hidden="true"
+  ></span>
+  <Icon name={icon} class="size-3 shrink-0" aria-hidden="true" />
+  <span>{label}</span>
+  <span class="sr-only">— {hint}</span>
+</span>

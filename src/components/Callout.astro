@@ -3,135 +3,100 @@ import { cn } from '@/lib/utils'
 import { Icon } from 'astro-icon/components'
 import { cva, type VariantProps } from 'class-variance-authority'
 
-const calloutConfig = {
-  note: {
-    style: 'border-blue-500 dark:bg-blue-950/5',
-    textColor: 'text-blue-700 dark:text-blue-300',
-    icon: 'lucide:info',
-  },
-  tip: {
-    style: 'border-green-500 dark:bg-green-950/5',
-    textColor: 'text-green-700 dark:text-green-300',
-    icon: 'lucide:lightbulb',
-  },
-  warning: {
-    style: 'border-amber-500 dark:bg-amber-950/5',
-    textColor: 'text-amber-700 dark:text-amber-300',
-    icon: 'lucide:alert-triangle',
-  },
-  danger: {
-    style: 'border-red-500 dark:bg-red-950/5',
-    textColor: 'text-red-700 dark:text-red-300',
-    icon: 'lucide:shield-alert',
-  },
-  important: {
-    style: 'border-purple-500 dark:bg-purple-950/5',
-    textColor: 'text-purple-700 dark:text-purple-300',
-    icon: 'lucide:message-square-warning',
-  },
-  definition: {
-    style: 'border-purple-500 dark:bg-purple-950/5',
-    textColor: 'text-purple-700 dark:text-purple-300',
-    icon: 'lucide:book-open',
-  },
-  theorem: {
-    style: 'border-teal-500 dark:bg-teal-950/5',
-    textColor: 'text-teal-700 dark:text-teal-300',
-    icon: 'lucide:check-circle',
-  },
-  lemma: {
-    style: 'border-sky-400 dark:bg-sky-950/5',
-    textColor: 'text-sky-700 dark:text-sky-300',
-    icon: 'lucide:puzzle',
-  },
-  proof: {
-    style: 'border-gray-500 dark:bg-gray-950/5',
-    textColor: 'text-gray-700 dark:text-gray-300',
-    icon: 'lucide:check-square',
-  },
-  corollary: {
-    style: 'border-cyan-500 dark:bg-cyan-950/5',
-    textColor: 'text-cyan-700 dark:text-cyan-300',
-    icon: 'lucide:git-branch',
-  },
-  proposition: {
-    style: 'border-slate-500 dark:bg-slate-950/5',
-    textColor: 'text-slate-700 dark:text-slate-300',
-    icon: 'lucide:file-text',
-  },
-  axiom: {
-    style: 'border-violet-600 dark:bg-violet-950/5',
+/*
+ * Colour encodes the FAMILY — what kind of thing this is.
+ * The icon distinguishes variants WITHIN a family.
+ *
+ * This is why `theorem`, `lemma` and `corollary` share a hue: they are the same
+ * category of statement, and that is true information about the content. A hue
+ * per variant made colour decorative — you could not tell a theorem from an
+ * answer, so the colour stopped meaning anything.
+ */
+const families = {
+  structural: {
+    style: 'border-violet-500 bg-violet-500/5',
     textColor: 'text-violet-700 dark:text-violet-300',
-    icon: 'lucide:anchor',
   },
-  conjecture: {
-    style: 'border-pink-500 dark:bg-pink-950/5',
-    textColor: 'text-pink-700 dark:text-pink-300',
-    icon: 'lucide:help-circle',
-  },
-  notation: {
-    style: 'border-slate-400 dark:bg-slate-950/5',
-    textColor: 'text-slate-700 dark:text-slate-300',
-    icon: 'lucide:pen-tool',
-  },
-  remark: {
-    style: 'border-gray-400 dark:bg-gray-950/5',
-    textColor: 'text-gray-700 dark:text-gray-300',
-    icon: 'lucide:message-circle',
-  },
-  intuition: {
-    style: 'border-yellow-500 dark:bg-yellow-950/5',
-    textColor: 'text-yellow-700 dark:text-yellow-300',
-    icon: 'lucide:lightbulb',
-  },
-  recall: {
-    style: 'border-blue-300 dark:bg-blue-950/5',
-    textColor: 'text-blue-600 dark:text-blue-300',
-    icon: 'lucide:rotate-ccw',
-  },
-  explanation: {
-    style: 'border-lime-500 dark:bg-lime-950/5',
-    textColor: 'text-lime-700 dark:text-lime-300',
-    icon: 'lucide:help-circle',
-  },
-  example: {
-    style: 'border-emerald-500 dark:bg-emerald-950/5',
-    textColor: 'text-emerald-700 dark:text-emerald-300',
-    icon: 'lucide:code',
-  },
-  exercise: {
-    style: 'border-indigo-500 dark:bg-indigo-950/5',
-    textColor: 'text-indigo-700 dark:text-indigo-300',
-    icon: 'lucide:dumbbell',
-  },
-  problem: {
-    style: 'border-orange-600 dark:bg-orange-950/5',
-    textColor: 'text-orange-700 dark:text-orange-300',
-    icon: 'lucide:alert-circle',
-  },
-  answer: {
-    style: 'border-teal-500 dark:bg-teal-950/5',
+  assertive: {
+    style: 'border-teal-600 bg-teal-600/5',
     textColor: 'text-teal-700 dark:text-teal-300',
-    icon: 'lucide:check',
   },
-  solution: {
-    style: 'border-emerald-600 dark:bg-emerald-950/5',
+  derivational: {
+    style: 'border-emerald-600 bg-emerald-600/5',
     textColor: 'text-emerald-700 dark:text-emerald-300',
-    icon: 'lucide:check-circle-2',
   },
-  summary: {
-    style: 'border-sky-500 dark:bg-sky-950/5',
+  pedagogical: {
+    style: 'border-sky-500 bg-sky-500/5',
     textColor: 'text-sky-700 dark:text-sky-300',
-    icon: 'lucide:list',
   },
+  interrogative: {
+    style: 'border-fuchsia-500 bg-fuchsia-500/5',
+    textColor: 'text-fuchsia-700 dark:text-fuchsia-300',
+  },
+  advisory: {
+    style: 'border-amber-500 bg-amber-500/5',
+    textColor: 'text-amber-700 dark:text-amber-300',
+  },
+  // `danger` is the one exception to one-hue-per-family: red for danger is too
+  // strong a convention to trade away for consistency.
+  critical: {
+    style: 'border-red-500 bg-red-500/5',
+    textColor: 'text-red-700 dark:text-red-300',
+  },
+} as const
+
+const calloutConfig = {
+  // — structural: names the objects we reason about
+  definition: { family: 'structural', icon: 'lucide:book-open' },
+  notation: { family: 'structural', icon: 'lucide:pen-tool' },
+
+  // — assertive: claims asserted to be true
+  theorem: { family: 'assertive', icon: 'lucide:check-circle' },
+  lemma: { family: 'assertive', icon: 'lucide:puzzle' },
+  proposition: { family: 'assertive', icon: 'lucide:file-text' },
+  corollary: { family: 'assertive', icon: 'lucide:git-branch' },
+  axiom: { family: 'assertive', icon: 'lucide:anchor' },
+
+  // — derivational: the work that gets you there
+  proof: { family: 'derivational', icon: 'lucide:check-square' },
+  solution: { family: 'derivational', icon: 'lucide:check-circle-2' },
+  answer: { family: 'derivational', icon: 'lucide:check' },
+
+  // — pedagogical: helps the reader hold on to it
+  intuition: { family: 'pedagogical', icon: 'lucide:lightbulb' },
+  explanation: { family: 'pedagogical', icon: 'lucide:messages-square' },
+  example: { family: 'pedagogical', icon: 'lucide:code' },
+  recall: { family: 'pedagogical', icon: 'lucide:rotate-ccw' },
+  remark: { family: 'pedagogical', icon: 'lucide:message-circle' },
+  note: { family: 'pedagogical', icon: 'lucide:info' },
+  tip: { family: 'pedagogical', icon: 'lucide:sparkles' },
+  summary: { family: 'pedagogical', icon: 'lucide:list' },
+
+  // — interrogative: asks something of the reader
+  exercise: { family: 'interrogative', icon: 'lucide:dumbbell' },
+  problem: { family: 'interrogative', icon: 'lucide:alert-circle' },
+  conjecture: { family: 'interrogative', icon: 'lucide:help-circle' },
+
+  // — advisory: watch out
+  important: { family: 'advisory', icon: 'lucide:message-square-warning' },
+  warning: { family: 'advisory', icon: 'lucide:alert-triangle' },
+  danger: { family: 'critical', icon: 'lucide:shield-alert' },
 } as const
 
 const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
 
+const styleFor = (v: keyof typeof calloutConfig) =>
+  families[calloutConfig[v].family].style
+const textFor = (v: keyof typeof calloutConfig) =>
+  families[calloutConfig[v].family].textColor
+
 const calloutVariants = cva('relative px-4 py-3 my-6 border-l-4 text-sm', {
   variants: {
     variant: Object.fromEntries(
-      Object.entries(calloutConfig).map(([key, config]) => [key, config.style]),
+      Object.keys(calloutConfig).map((key) => [
+        key,
+        styleFor(key as keyof typeof calloutConfig),
+      ]),
     ),
   },
   defaultVariants: {
@@ -147,6 +112,7 @@ interface Props extends VariantProps<typeof calloutVariants> {
 }
 
 const { title, variant = 'note', defaultOpen = true, ...rest } = Astro.props
+const accent = textFor(variant)
 ---
 
 <details
@@ -163,9 +129,9 @@ const { title, variant = 'note', defaultOpen = true, ...rest } = Astro.props
   >
     <Icon
       name={calloutConfig[variant].icon}
-      class={cn('mr-2 size-4 shrink-0', calloutConfig[variant].textColor)}
+      class={cn('mr-2 size-4 shrink-0', accent)}
     />
-    <span class={cn('font-medium mr-2', calloutConfig[variant].textColor)}>
+    <span class={cn('mr-2 font-medium', accent)}>
       {capitalize(variant)}
       {title && <span class="font-normal opacity-70"> ({title})</span>}
     </span>
@@ -173,7 +139,7 @@ const { title, variant = 'note', defaultOpen = true, ...rest } = Astro.props
       name="lucide:chevron-down"
       class={cn(
         'ml-auto h-4 w-4 shrink-0 transition-transform duration-200',
-        calloutConfig[variant].textColor,
+        accent,
       )}
     />
   </summary>

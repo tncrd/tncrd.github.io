@@ -38,7 +38,7 @@ const MobileMenu = () => {
         <Button
           variant="ghost"
           size="icon"
-          className="size-8 sm:hidden"
+          className="relative size-8 after:absolute after:-inset-1.5 after:content-[''] sm:hidden"
           title="Menu"
         >
           <Menu className="size-5" />

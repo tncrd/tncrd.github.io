@@ -1,5 +1,6 @@
 ---
 import AvatarComponent from '@/components/ui/avatar'
+import StageBadge from '@/components/StageBadge.astro'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import {
@@ -23,6 +24,8 @@ const formattedDate = formatDate(entry.data.date)
 const readTime = await getCombinedReadingTime(entry.id)
 const authors = await parseAuthors(entry.data.authors ?? [])
 const subpostCount = !isSubpost(entry.id) ? await getSubpostCount(entry.id) : 0
+const updated = entry.data.updated
+const isRevised = updated && updated.valueOf() !== entry.data.date.valueOf()
 ---
 
 <div
@@ -77,7 +80,23 @@ const subpostCount = !isSubpost(entry.id) ? await getSubpostCount(entry.id) : 0
               </>
             )
           }
-          <span>{formattedDate}</span>
+          {
+            entry.data.stage && (
+              <>
+                <StageBadge stage={entry.data.stage} />
+                <Separator orientation="vertical" className="h-4!" />
+              </>
+            )
+          }
+          {
+            isRevised ? (
+              <span title={`Published ${formattedDate}`}>
+                Updated {formatDate(updated!)}
+              </span>
+            ) : (
+              <span>{formattedDate}</span>
+            )
+          }
           <Separator orientation="vertical" className="h-4!" />
           <span>{readTime}</span>
           {

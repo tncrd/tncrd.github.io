@@ -1,0 +1,682 @@
+<title>Design System — numeri/que/ garden</title>
+<style>
+:root{
+  --paper:#FAFAFB; --card:#FFFFFF; --ink:#17161C; --ink-2:#43414F;
+  --neutral:#6C6A78; --line:#E3E2E9; --line-2:#D2D0DC;
+  --brand:#524FFC; --brand-soft:#EEEDFF;
+  --bad:#B3392F; --bad-soft:#FBEDEB;
+  --good:#1F6F52; --good-soft:#E9F4EF;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif;
+  --r:3px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#111015; --card:#191820; --ink:#F2F1F6; --ink-2:#BFBCCC;
+    --neutral:#918EA0; --line:#2B2933; --line-2:#3A3845;
+    --brand:#A3A2E6; --brand-soft:#221F3A;
+    --bad:#E08A80; --bad-soft:#2E1C1A;
+    --good:#6FBF9C; --good-soft:#14261F;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111015; --card:#191820; --ink:#F2F1F6; --ink-2:#BFBCCC;
+  --neutral:#918EA0; --line:#2B2933; --line-2:#3A3845;
+  --brand:#A3A2E6; --brand-soft:#221F3A;
+  --bad:#E08A80; --bad-soft:#2E1C1A;
+  --good:#6FBF9C; --good-soft:#14261F;
+}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);
+  line-height:1.6;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px 96px}
+
+/* ---------- masthead ---------- */
+.mast{padding:64px 0 40px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--neutral);margin:0 0 20px}
+h1{font-family:var(--mono);font-size:clamp(26px,4.4vw,40px);font-weight:600;
+  letter-spacing:-.02em;line-height:1.15;margin:0 0 14px;text-wrap:balance}
+.lede{font-size:17px;color:var(--ink-2);max-width:64ch;margin:0}
+.scores{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;align-items:center}
+.score{font-family:var(--mono);font-size:13px;border:1px solid var(--line-2);
+  border-radius:var(--r);padding:7px 12px;display:flex;gap:9px;align-items:center}
+.score b{font-size:16px;font-weight:600}
+.score--now b{color:var(--bad)} .score--next b{color:var(--good)}
+.arrow{color:var(--neutral);font-family:var(--mono)}
+
+/* ---------- sections ---------- */
+section{padding-top:56px}
+h2{font-family:var(--mono);font-size:19px;font-weight:600;letter-spacing:-.01em;
+  margin:0 0 6px;display:flex;flex-wrap:wrap;gap:10px;align-items:baseline}
+.tag{font-family:var(--mono);font-size:10px;letter-spacing:.08em;padding:3px 7px;
+  border-radius:var(--r);font-weight:600;white-space:nowrap}
+.p0{background:var(--bad);color:var(--paper)}
+.p1{background:var(--bad-soft);color:var(--bad);border:1px solid var(--bad)}
+.p2{background:transparent;color:var(--neutral);border:1px solid var(--line-2)}
+.intro{color:var(--ink-2);max-width:70ch;margin:0 0 26px;font-size:15px}
+
+/* ---------- comparison grid ---------- */
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+@media(max-width:760px){.cmp{grid-template-columns:1fr}}
+.pane{border:1px solid var(--line);border-radius:var(--r);background:var(--card);
+  overflow:hidden;display:flex;flex-direction:column}
+.pane__h{font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;padding:9px 14px;border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;gap:10px;align-items:center}
+.pane--bad .pane__h{color:var(--bad);background:var(--bad-soft)}
+.pane--good .pane__h{color:var(--good);background:var(--good-soft)}
+.pane__b{padding:18px 16px;flex:1}
+
+/* ---------- simulated blog screens ---------- */
+.scr{--s-bg:#FFFFFF;--s-fg:#0A0A0A;--s-mut:#737373;--s-sec:#F5F5F5;--s-line:#E5E5E5;
+  background:var(--s-bg);color:var(--s-fg);border:1px solid var(--line-2);
+  border-radius:var(--r);padding:16px;font-size:14px}
+.scr--dark{--s-bg:#0A0A0A;--s-fg:#FAFAFA;--s-mut:#A1A1A1;--s-sec:#262626;--s-line:#2A2A2A}
+.scr__lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--s-mut);margin-bottom:12px}
+.scr + .scr{margin-top:12px}
+
+/* ghost button demos */
+.gbtn{font-family:var(--sans);font-size:14px;font-weight:500;border:0;cursor:pointer;
+  border-radius:6px;padding:9px 16px;background:transparent;color:var(--s-fg);
+  transition:background-color .15s,color .15s}
+.gbtn--old:hover{background:#524FFC;color:#171717}
+.scr--dark .gbtn--old:hover{background:#A3A2E6;color:#FAFAFA}
+.gbtn--new:hover{background:var(--s-sec);color:var(--s-fg)}
+.gbtn--new:focus-visible{outline:2px solid #524FFC;outline-offset:2px}
+.scr--dark .gbtn--new:focus-visible{outline-color:#A3A2E6}
+.hint{font-family:var(--mono);font-size:11px;color:var(--s-mut);margin-top:10px}
+
+/* ratio readouts */
+.ratios{display:flex;flex-direction:column;gap:7px;margin-top:14px}
+.ratio{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:12px;
+  font-variant-numeric:tabular-nums}
+.ratio__n{min-width:62px;font-weight:600}
+.ratio__t{color:var(--neutral);font-size:11px}
+.fail{color:var(--bad)} .pass{color:var(--good)}
+.bar{height:5px;border-radius:3px;background:var(--line);flex:1;
+  max-width:110px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:3px}
+.bar i.fail{background:var(--bad)} .bar i.pass{background:var(--good)}
+
+/* code */
+pre{font-family:var(--mono);font-size:12.5px;line-height:1.65;margin:0;
+  overflow-x:auto;padding:14px;background:var(--paper);
+  border:1px solid var(--line);border-radius:var(--r);color:var(--ink-2);
+  font-variant-ligatures:none}
+.del{color:var(--bad)} .add{color:var(--good)} .cm{color:var(--neutral)}
+code{font-family:var(--mono);font-size:.9em;background:var(--paper);
+  border:1px solid var(--line);border-radius:var(--r);padding:1px 5px}
+
+/* swatches */
+.sw-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.sw{flex:1;min-width:78px}
+.sw__c{height:46px;border-radius:var(--r);border:1px solid var(--line-2)}
+.sw__n{font-family:var(--mono);font-size:10px;margin-top:5px;color:var(--neutral);
+  letter-spacing:.02em;line-height:1.4}
+.sw__n b{display:block;color:var(--ink);font-weight:600;letter-spacing:0}
+
+/* headings demo */
+.hd{font-family:var(--mono);font-size:11px;color:var(--neutral);
+  border-left:2px solid var(--line-2);padding-left:11px;margin:0 0 4px}
+.hd b{color:var(--ink)}
+.hd--err{border-left-color:var(--bad);color:var(--bad)}
+.hd--err b{color:var(--bad)}
+.hd--ok{border-left-color:var(--good)}
+.indent1{margin-left:16px} .indent2{margin-left:32px}
+
+/* measure demo */
+.meas{font-size:14px;line-height:1.7;color:var(--ink-2);margin:0}
+.meas--wide{max-width:none}
+.meas--good{max-width:52ch}
+.ruler{font-family:var(--mono);font-size:10.5px;color:var(--neutral);
+  border-top:1px dashed var(--line-2);margin-top:11px;padding-top:6px;
+  display:flex;justify-content:space-between}
+
+/* callout families */
+.co{border-left:3px solid;padding:8px 12px;border-radius:0 var(--r) var(--r) 0;
+  font-size:12.5px;font-family:var(--mono);margin-bottom:6px;
+  display:flex;justify-content:space-between;gap:10px;align-items:center}
+.co span:last-child{font-size:10.5px;opacity:.75;text-align:right}
+.co-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 8px}
+@media(max-width:520px){.co-grid{grid-template-columns:1fr}}
+.co-mini{font-family:var(--mono);font-size:10.5px;padding:4px 7px;
+  border-left:3px solid;border-radius:0 2px 2px 0}
+
+/* targets */
+.tg-row{display:flex;gap:14px;align-items:flex-end;margin-bottom:12px}
+.tg{position:relative;display:grid;place-items:center;border-radius:6px;
+  border:1px solid var(--line-2);color:var(--ink-2);background:var(--card)}
+.tg--32{width:32px;height:32px}
+.tg--44{width:32px;height:32px}
+.tg--44::after{content:"";position:absolute;inset:-6px;border:1px dashed var(--good);
+  border-radius:8px}
+.tg-cap{font-family:var(--mono);font-size:10.5px;color:var(--neutral)}
+
+/* file list */
+.files{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+  background:var(--card)}
+.file{display:grid;grid-template-columns:minmax(150px,270px) 1fr auto;gap:14px;
+  padding:11px 14px;border-bottom:1px solid var(--line);align-items:baseline;
+  font-size:13.5px}
+.file:last-child{border-bottom:0}
+.file__p{font-family:var(--mono);font-size:11.5px;color:var(--brand);
+  word-break:break-all}
+.file__d{color:var(--ink-2)}
+.file__t{font-family:var(--mono);font-size:10px;color:var(--neutral);
+  white-space:nowrap;letter-spacing:.06em}
+@media(max-width:700px){.file{grid-template-columns:1fr;gap:3px}}
+
+.note{border-left:2px solid var(--brand);padding:2px 0 2px 15px;
+  color:var(--ink-2);font-size:14px;max-width:68ch;margin:24px 0 0}
+hr{border:0;border-top:1px solid var(--line);margin:56px 0 0}
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">Design System · Livré · 11 sept. 2026</p>
+  <h1>numeri/que/ garden</h1>
+  <p class="lede">Tout ce qui suit est <strong>implémenté et vérifié par build</strong>
+    (<code>astro check</code> : 0 erreur, 0 warning). Chaque fiche montre l'état d'avant
+    à gauche et ce qui tourne maintenant à droite. Les écrans de démo portent les
+    <em>vraies</em> couleurs de ton blog — pas une approximation.</p>
+  <div class="scores">
+    <span class="score score--now">audit actuel <b>12/20</b></span>
+    <span class="arrow">&rarr;</span>
+    <span class="score score--next">après ces fiches <b>17/20</b></span>
+    <span class="score" style="color:var(--neutral)">15 pages · build vert</span>
+  </div>
+</header>
+
+<!-- 1 — ACCENT -->
+<section>
+  <h2>1 · Le token <code>--accent</code> <span class="tag p1">P1</span></h2>
+  <p class="intro">La racine du problème. Dans shadcn, <code>--accent</code> est une
+    <strong>surface de survol neutre</strong>, pas une couleur de marque. Tu l'as
+    redéfini en bleu-violet saturé mais <code>--accent-foreground</code> est resté
+    neutre. Résultat : chaque survol et chaque focus peint du texte à faible contraste
+    sur un aplat saturé. Survole les boutons ci-dessous.</p>
+
+  <div class="cmp">
+    <div class="pane pane--bad">
+      <div class="pane__h"><span>Avant</span><span>échoue AA</span></div>
+      <div class="pane__b">
+        <div class="scr">
+          <div class="scr__lbl">Thème clair</div>
+          <button class="gbtn gbtn--old">Voir tous les articles &rarr;</button>
+          <p class="hint">survol &rarr; #171717 sur #524FFC</p>
+        </div>
+        <div class="scr scr--dark">
+          <div class="scr__lbl">Thème sombre</div>
+          <button class="gbtn gbtn--old">Voir tous les articles &rarr;</button>
+          <p class="hint">survol &rarr; #FAFAFA sur #A3A2E6</p>
+        </div>
+        <div class="ratios">
+          <div class="ratio"><span class="ratio__n fail">3.31:1</span>
+            <span class="bar"><i class="fail" style="width:44%"></i></span>
+            <span class="ratio__t">clair · survol</span></div>
+          <div class="ratio"><span class="ratio__n fail">2.27:1</span>
+            <span class="bar"><i class="fail" style="width:22%"></i></span>
+            <span class="ratio__t">sombre · survol</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pane pane--good">
+      <div class="pane__h"><span>Après</span><span>passe AA</span></div>
+      <div class="pane__b">
+        <div class="scr">
+          <div class="scr__lbl">Thème clair</div>
+          <button class="gbtn gbtn--new">Voir tous les articles &rarr;</button>
+          <p class="hint">survol &rarr; surface neutre · focus &rarr; marque</p>
+        </div>
+        <div class="scr scr--dark">
+          <div class="scr__lbl">Thème sombre</div>
+          <button class="gbtn gbtn--new">Voir tous les articles &rarr;</button>
+          <p class="hint">survol &rarr; surface neutre · focus &rarr; marque</p>
+        </div>
+        <div class="ratios">
+          <div class="ratio"><span class="ratio__n pass">16.1:1</span>
+            <span class="bar"><i class="pass" style="width:100%"></i></span>
+            <span class="ratio__t">clair · survol</span></div>
+          <div class="ratio"><span class="ratio__n pass">15.3:1</span>
+            <span class="bar"><i class="pass" style="width:100%"></i></span>
+            <span class="ratio__t">sombre · survol</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="note">Le fond du problème : tu as défini une couleur de marque qui n'est
+    <strong>jamais utilisée comme couleur de marque</strong>. Les liens sont en
+    <code>foreground</code>, la nav en <code>foreground/60</code>, les badges en
+    <code>secondary</code>. Ton bleu-violet ne sort que par des survols qu'il n'était
+    pas censé peindre. On sépare les deux rôles — et tu récupères une vraie marque à
+    dépenser volontairement.</p>
+
+  <div class="cmp" style="margin-top:20px">
+    <div class="pane"><div class="pane__h"><span>global.css — avant</span></div>
+      <pre><span class="cm">:root {</span>
+  <span class="del">--accent: oklch(54.67% .2475 275.21);</span>
+  <span class="del">--accent-foreground: oklch(.205 0 0);</span>
+<span class="cm">}</span>
+<span class="cm">[data-theme='dark'] {</span>
+  <span class="del">--accent: oklch(73.85% .0976 284.42);</span>
+  <span class="del">--accent-foreground: oklch(.985 0 0);</span>
+<span class="cm">}</span></pre></div>
+    <div class="pane"><div class="pane__h"><span>global.css — après</span></div>
+      <pre><span class="cm">:root {</span>
+  <span class="add">--accent: oklch(.97 0 0);</span>       <span class="cm">/* survol */</span>
+  <span class="add">--accent-foreground: oklch(.205 0 0);</span>
+  <span class="add">--brand: oklch(54.67% .2475 275.21);</span>
+  <span class="add">--brand-foreground: oklch(.985 0 0);</span>
+<span class="cm">}</span>
+<span class="cm">[data-theme='dark'] {</span>
+  <span class="add">--accent: oklch(.269 0 0);</span>
+  <span class="add">--accent-foreground: oklch(.985 0 0);</span>
+  <span class="add">--brand: oklch(73.85% .0976 284.42);</span>
+  <span class="add">--brand-foreground: oklch(.205 0 0);</span>
+<span class="cm">}</span></pre></div>
+  </div>
+
+  <div style="margin-top:20px">
+    <p class="eyebrow" style="margin-bottom:12px">Où dépenser la marque, une fois libérée</p>
+    <div class="sw-row">
+      <div class="sw"><div class="sw__c" style="background:#524FFC"></div>
+        <div class="sw__n"><b>--brand</b>clair · #524FFC</div></div>
+      <div class="sw"><div class="sw__c" style="background:#A3A2E6"></div>
+        <div class="sw__n"><b>--brand</b>sombre · #A3A2E6</div></div>
+      <div class="sw"><div class="sw__c" style="background:#F5F5F5"></div>
+        <div class="sw__n"><b>--accent</b>clair · #F5F5F5</div></div>
+      <div class="sw"><div class="sw__c" style="background:#262626"></div>
+        <div class="sw__n"><b>--accent</b>sombre · #262626</div></div>
+    </div>
+    <p class="intro" style="margin-bottom:0">Trois emplois cohérents, pas plus :
+      l'anneau de focus, l'anneau de progression du sommaire, et l'entrée active du
+      sommaire. Un accent utilisé à trois endroits cohérents se lit comme un système ;
+      un accent qui n'apparaît qu'au survol se lit comme un accident.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- 2 — HEADINGS -->
+<section>
+  <h2>2 · Hiérarchie des titres <span class="tag p0">P0</span></h2>
+  <p class="intro">La page d'accueil n'a aucun <code>&lt;h1&gt;</code> et descend
+    jusqu'à h4 avant de remonter à h2. Les index blog et tags n'ont
+    <em>aucun</em> titre. C'est la violation WCAG 1.3.1 niveau A — et le mode de
+    navigation principal des lecteurs d'écran.</p>
+  <div class="cmp">
+    <div class="pane pane--bad">
+      <div class="pane__h"><span>Avant — index.astro</span><span>WCAG A</span></div>
+      <div class="pane__b">
+        <p class="hd hd--err"><b>h3</b> &nbsp;Hey 👋 I'm tncrd</p>
+        <p class="hd hd--err indent1"><b>h4</b> &nbsp;Welcome on my personnal blog…</p>
+        <p class="hd hd--err"><b>h2</b> &nbsp;Latest posts</p>
+        <p class="hint" style="color:var(--bad);margin-top:14px">
+          aucun h1 · l'ordre descend puis remonte</p>
+      </div>
+    </div>
+    <div class="pane pane--good">
+      <div class="pane__h"><span>Après</span><span>conforme</span></div>
+      <div class="pane__b">
+        <p class="hd hd--ok"><b>h1</b> &nbsp;Hey, I'm tncrd</p>
+        <p class="hd indent1"><b>p</b> &nbsp;&nbsp;Welcome on my personnal blog…</p>
+        <p class="hd hd--ok"><b>h2</b> &nbsp;Latest posts</p>
+        <p class="hint" style="color:var(--good);margin-top:14px">
+          un h1 · ordre strictement descendant</p>
+      </div>
+    </div>
+  </div>
+  <p class="note">La ligne d'accroche devient un <code>&lt;p&gt;</code> : c'est une
+    accroche, pas une section. Au passage, <code>text-1xl</code> n'existe pas dans
+    Tailwind — cette classe n'a jamais rien appliqué.</p>
+</section>
+
+<hr>
+
+<!-- 3 — MEASURE -->
+<section>
+  <h2>3 · Largeur de lecture <span class="tag p2">P2</span></h2>
+  <p class="intro">La colonne d'article fait 736px, soit environ <strong>90 caractères</strong>
+    par ligne. La plage confortable est 60–75. Sur un blog dont la raison d'être est
+    l'écrit long et les maths denses, c'est le gain de lisibilité le plus direct.</p>
+  <div class="cmp">
+    <div class="pane pane--bad">
+      <div class="pane__h"><span>Avant · max-w-none</span><span>~90 ch</span></div>
+      <div class="pane__b">
+        <p class="meas meas--wide">La théorie des valeurs extrêmes s'intéresse au
+          comportement asymptotique des statistiques d'ordre supérieur, et le choix du
+          seuil au-delà duquel on ajuste une loi de Pareto généralisée conditionne
+          entièrement la qualité de l'estimation des quantiles extrêmes obtenus.</p>
+        <div class="ruler"><span>736 px</span><span>l'œil perd la ligne au retour</span></div>
+      </div>
+    </div>
+    <div class="pane pane--good">
+      <div class="pane__h"><span>Après · max-w-[68ch]</span><span>~68 ch</span></div>
+      <div class="pane__b">
+        <p class="meas meas--good">La théorie des valeurs extrêmes s'intéresse au
+          comportement asymptotique des statistiques d'ordre supérieur, et le choix du
+          seuil au-delà duquel on ajuste une loi de Pareto généralisée conditionne
+          entièrement la qualité de l'estimation des quantiles extrêmes obtenus.</p>
+        <div class="ruler"><span>~608 px</span><span>retour de ligne fiable</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="note">Les blocs de code, les figures et <code>.katex-display</code> gardent
+    leur pleine largeur en débordant de la colonne — ils ont déjà leurs propres
+    conteneurs de débordement.</p>
+</section>
+
+<hr>
+
+<!-- 4 — CALLOUTS -->
+<section>
+  <h2>4 · Palette des callouts <span class="tag p2">P2</span></h2>
+  <p class="intro">25 variantes, et les couleurs se télescopent :
+    <code>theorem</code> et <code>answer</code> sont tous deux teal,
+    <code>important</code> et <code>definition</code> tous deux purple,
+    <code>proof</code> et <code>remark</code> tous deux gris. Quand le lecteur ne peut
+    pas déduire le type à partir de la couleur, la couleur a cessé d'informer : elle
+    décore. Et c'est là que ça commence à ressembler à un arc-en-ciel.</p>
+  <div class="cmp">
+    <div class="pane pane--bad">
+      <div class="pane__h"><span>Avant · 25 teintes</span><span>collisions</span></div>
+      <div class="pane__b">
+        <div class="co-grid">
+          <div class="co-mini" style="border-color:#14b8a6;color:#0f766e">theorem</div>
+          <div class="co-mini" style="border-color:#14b8a6;color:#0f766e">answer</div>
+          <div class="co-mini" style="border-color:#a855f7;color:#7e22ce">important</div>
+          <div class="co-mini" style="border-color:#a855f7;color:#7e22ce">definition</div>
+          <div class="co-mini" style="border-color:#10b981;color:#047857">example</div>
+          <div class="co-mini" style="border-color:#059669;color:#047857">solution</div>
+          <div class="co-mini" style="border-color:#6b7280;color:#374151">proof</div>
+          <div class="co-mini" style="border-color:#9ca3af;color:#374151">remark</div>
+          <div class="co-mini" style="border-color:#0ea5e9;color:#0369a1">lemma</div>
+          <div class="co-mini" style="border-color:#06b6d4;color:#0e7490">corollary</div>
+          <div class="co-mini" style="border-color:#7c3aed;color:#6d28d9">axiom</div>
+          <div class="co-mini" style="border-color:#ec4899;color:#be185d">conjecture</div>
+        </div>
+        <p class="hint" style="color:var(--bad)">4 paires indiscernables · gris sur
+          fond teinté</p>
+      </div>
+    </div>
+    <div class="pane pane--good">
+      <div class="pane__h"><span>Après · 6 familles</span><span>l'icône distingue</span></div>
+      <div class="pane__b">
+        <div class="co" style="border-color:#524FFC;color:#4338ca;background:#EEEDFF">
+          <span>Structurel</span><span>definition · notation</span></div>
+        <div class="co" style="border-color:#0f766e;color:#0f766e;background:#E6F4F1">
+          <span>Assertif</span><span>theorem · lemma · axiom…</span></div>
+        <div class="co" style="border-color:#047857;color:#047857;background:#E7F4EE">
+          <span>Dérivationnel</span><span>proof · solution · answer</span></div>
+        <div class="co" style="border-color:#b45309;color:#b45309;background:#FBF1E3">
+          <span>Pédagogique</span><span>intuition · example · recall…</span></div>
+        <div class="co" style="border-color:#be185d;color:#be185d;background:#FBEBF2">
+          <span>Interrogatif</span><span>exercise · problem · conjecture</span></div>
+        <div class="co" style="border-color:#b91c1c;color:#b91c1c;background:#FBECEC">
+          <span>Avertissement</span><span>note · warning · danger…</span></div>
+        <p class="hint" style="color:var(--good)">chaque teinte = un rôle · texte dans
+          la teinte de la famille</p>
+      </div>
+    </div>
+  </div>
+  <p class="note">À l'intérieur d'une famille, c'est l'<strong>icône</strong> qui
+    distingue, pas la teinte. <code>theorem</code>, <code>lemma</code> et
+    <code>corollary</code> partagent le teal parce qu'ils sont la même
+    <em>catégorie d'énoncé</em> — et c'est une information vraie sur ton contenu.</p>
+</section>
+
+<hr>
+
+<!-- 5 — small fixes -->
+<section>
+  <h2>5 · Corrections courtes</h2>
+  <p class="intro">Quatre corrections d'une ligne, plus la zone tactile.</p>
+  <div class="cmp">
+    <div class="pane pane--bad">
+      <div class="pane__h"><span>Avant</span></div>
+      <div class="pane__b">
+        <div class="scr scr--dark">
+          <div class="scr__lbl">Nav · thème sombre</div>
+          <span style="color:#5E5E5E;font-size:14px">blog &nbsp; about &nbsp; areas of interests</span>
+          <p class="hint" style="color:#E08A80">foreground/60 &rarr; 3.04:1 · échoue AA</p>
+        </div>
+        <div class="scr scr--dark">
+          <div class="scr__lbl">Pastilles accueil · survol</div>
+          <span style="background:#F3F4F6;color:#FAFAFA;border-radius:6px;
+            padding:3px 9px;font-size:13px">Computer Science</span>
+          <p class="hint" style="color:#E08A80">hover:bg-gray-100 codé en dur</p>
+        </div>
+        <div class="scr" style="margin-top:12px">
+          <div class="scr__lbl">Zones tactiles · en-tête mobile</div>
+          <div class="tg-row">
+            <div class="tg tg--32">☀</div><div class="tg tg--32">☰</div>
+          </div>
+          <span class="tg-cap" style="color:var(--bad)">32px, adjacents &rarr; mauvais appuis</span>
+        </div>
+      </div>
+    </div>
+    <div class="pane pane--good">
+      <div class="pane__h"><span>Après</span></div>
+      <div class="pane__b">
+        <div class="scr scr--dark">
+          <div class="scr__lbl">Nav · thème sombre</div>
+          <span style="color:#A1A1A1;font-size:14px">blog &nbsp; about &nbsp; areas of interests</span>
+          <p class="hint" style="color:#6FBF9C">text-muted-foreground &rarr; 7.63:1 · passe</p>
+        </div>
+        <div class="scr scr--dark">
+          <div class="scr__lbl">Pastilles accueil · survol</div>
+          <span style="background:#262626;color:#FAFAFA;border-radius:6px;
+            padding:3px 9px;font-size:13px">Computer Science</span>
+          <p class="hint" style="color:#6FBF9C">hover:bg-secondary · suit le thème</p>
+        </div>
+        <div class="scr" style="margin-top:12px">
+          <div class="scr__lbl">Zones tactiles · en-tête mobile</div>
+          <div class="tg-row" style="gap:26px">
+            <div class="tg tg--44">☀</div><div class="tg tg--44">☰</div>
+          </div>
+          <span class="tg-cap" style="color:var(--good)">44px cliquables, taille visuelle inchangée</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:20px">
+    <p class="eyebrow" style="margin-bottom:12px">Et le mouvement réduit — absent partout</p>
+    <div class="pane">
+      <div class="pane__h"><span>global.css — à ajouter</span><span>10 lignes, tout le site</span></div>
+      <pre><span class="add">@media (prefers-reduced-motion: reduce) {</span>
+  <span class="add">*, ::before, ::after {</span>
+    <span class="add">animation-duration: .01ms !important;</span>
+    <span class="add">transition-duration: .01ms !important;</span>
+    <span class="add">scroll-behavior: auto !important;</span>
+  <span class="add">}</span>
+  <span class="add">::view-transition-group(*),</span>
+  <span class="add">::view-transition-old(*),</span>
+  <span class="add">::view-transition-new(*) { animation: none !important; }</span>
+<span class="add">}</span></pre>
+    </div>
+    <p class="note">On garde les <em>changements d'état</em> — la vignette passe quand
+      même en couleur, le chevron pointe quand même vers le bas. On ne retire que
+      l'interpolation. C'est ça, le repli utile.</p>
+  </div>
+</section>
+
+
+<hr>
+
+<!-- 6b — GARDEN -->
+<section>
+  <h2>6 · Le jardin, assumé à petits pas <span class="tag p2">nouveau</span></h2>
+  <p class="intro">Le site s'appelait « garden » et se comportait comme un blog
+    antéchronologique. Le classement par date mettait en avant ta fréquence de
+    publication — ton point faible — au lieu de la densité de tes pièces. Deux champs
+    suffisent à corriger ça sans réécrire le site.</p>
+  <div class="cmp">
+    <div class="pane pane--bad">
+      <div class="pane__h"><span>Avant</span><span>chronologie sèche</span></div>
+      <div class="pane__b">
+        <div class="scr">
+          <div class="scr__lbl">Carte d'article</div>
+          <div style="font-weight:500;margin-bottom:3px">Time Series Thresholding
+            Using Extreme Value Theory</div>
+          <div style="font-family:var(--mono);font-size:11px;color:#737373">
+            tncrd &nbsp;·&nbsp; Oct 28, 2025 &nbsp;·&nbsp; 22 min read</div>
+          <p class="hint">la date dit « vieux de 10 mois »</p>
+        </div>
+      </div>
+    </div>
+    <div class="pane pane--good">
+      <div class="pane__h"><span>Après</span><span>maturité + entretien</span></div>
+      <div class="pane__b">
+        <div class="scr">
+          <div class="scr__lbl">Carte d'article</div>
+          <div style="font-weight:500;margin-bottom:3px">Time Series Thresholding
+            Using Extreme Value Theory</div>
+          <div style="font-family:var(--mono);font-size:11px;color:#737373;
+            display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+            <span>tncrd</span><span>·</span>
+            <span style="display:inline-flex;align-items:center;gap:5px">
+              <span style="width:6px;height:6px;border-radius:50%;
+                background:#524FFC;display:inline-block"></span>Evergreen</span>
+            <span>·</span><span>Oct 28, 2025</span><span>·</span><span>22 min read</span>
+          </div>
+          <p class="hint">la maturité dit « stable, fiable »</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="note">Trois stades — <strong>Seedling</strong> (notes brutes),
+    <strong>Growing</strong> (développé, encore révisé), <strong>Evergreen</strong>
+    (stable). Seul le point porte la couleur, et la pastille rejoint la ligne de
+    métadonnées existante au lieu de lui faire concurrence. Un champ
+    <code>updated</code> facultatif fait afficher « Updated&nbsp;… » à la place de la
+    date de publication. Les deux sont optionnels : un article sans
+    <code>stage</code> se comporte exactement comme avant.</p>
+</section>
+
+<hr>
+
+<!-- 6c — BANNERS -->
+<section>
+  <h2>7 · Les tableaux, enfin crédités <span class="tag p2">nouveau</span></h2>
+  <p class="intro">Géricault pour les valeurs extrêmes, Renoir pour les distances entre
+    distributions. Le naufrage romantique pour les événements rares, c'est un choix
+    juste — mais le schéma ne connaissait qu'un champ <code>image</code>, donc l'œuvre
+    était traitée comme un ornement anonyme.</p>
+  <div class="cmp">
+    <div class="pane pane--bad">
+      <div class="pane__h"><span>Avant</span><span>décoration</span></div>
+      <div class="pane__b">
+        <pre><span class="cm">---</span>
+<span class="del">image: "…/La tempête ou L'épave 1800 : 1825</span>
+<span class="del">        Géricault, Théodore.png"</span>
+<span class="cm">---</span></pre>
+        <p class="hint" style="color:var(--bad)">espaces + « : » dans le nom ·
+          <code>alt</code> = le titre de l'article · aucune attribution</p>
+      </div>
+    </div>
+    <div class="pane pane--good">
+      <div class="pane__h"><span>Après</span><span>signature éditoriale</span></div>
+      <div class="pane__b">
+        <pre><span class="cm">---</span>
+<span class="add">image: './images/banner-gericault.png'</span>
+<span class="add">banner:</span>
+<span class="add">  artwork: "La tempête (ou L'épave)"</span>
+<span class="add">  artist: 'Théodore Géricault'</span>
+<span class="add">  year: 'c. 1800–1825'</span>
+<span class="add">  source: 'https://…'</span>
+<span class="cm">---</span></pre>
+        <p class="hint" style="color:var(--good)">légende sous l'image ·
+          <code>alt</code> décrit l'œuvre · <code>og:image:alt</code> aussi</p>
+      </div>
+    </div>
+  </div>
+  <p class="note">La légende rendue :
+    <em>La tempête (ou L'épave)</em> (c. 1800–1825) · Théodore Géricault ·
+    <span style="text-decoration:underline">source</span>. Le champ est facultatif —
+    sans lui, la bannière se comporte comme avant.</p>
+</section>
+
+<hr>
+
+<!-- 6d — INVISIBLE BUGS -->
+<section>
+  <h2>8 · Trois bugs qu'on ne voyait pas <span class="tag p1">P1</span></h2>
+  <p class="intro">Ceux-là n'apparaissaient sur aucune capture d'écran.</p>
+  <div class="files">
+    <div class="file">
+      <span class="file__p">SITE.href = ''</span>
+      <span class="file__d"><strong>Aucun de tes articles n'affichait de vignette au
+        partage.</strong> Le canonical était vide et l'<code>og:image</code> était un
+        chemin relatif, que les crawlers rejettent. Tu avais choisi un Géricault que
+        personne ne voyait jamais sur LinkedIn ou Slack.</span>
+      <span class="file__t">CORRIGÉ</span></div>
+    <div class="file">
+      <span class="file__p">canonical → SITE.href</span>
+      <span class="file__d">Le canonical pointait vers la racine du site depuis
+        <em>chaque</em> page — on déclarait à Google que tous les articles sont des
+        doublons de l'accueil. Il pointe désormais vers l'URL de la page.</span>
+      <span class="file__t">CORRIGÉ</span></div>
+    <div class="file">
+      <span class="file__p">getParentId()</span>
+      <span class="file__d">Ne lisait que le <em>premier</em> segment du chemin, donc
+        le dossier <code>from-template/</code> cassait toute la hiérarchie : deux
+        sous-articles signés <strong>enscribe</strong> étaient publiés alors que leur
+        parent est en brouillon. 17 pages → 15.</span>
+      <span class="file__t">CORRIGÉ</span></div>
+  </div>
+</section>
+
+<hr>
+
+<!-- 9 — recap -->
+<section>
+  <h2>9 · Ce que ça touche, fichier par fichier</h2>
+  <p class="intro">Aucune dépendance ajoutée. <code>astro check</code> : 0 erreur,
+    0 warning, 0 hint.</p>
+  <div class="files">
+    <div class="file"><span class="file__p">src/styles/global.css</span>
+      <span class="file__d">Séparer <code>--accent</code> / <code>--brand</code> ·
+        ajouter le bloc mouvement réduit</span>
+      <span class="file__t">FICHE 1 · 5</span></div>
+    <div class="file"><span class="file__p">src/pages/index.astro</span>
+      <span class="file__d">h3&rarr;h1, h4&rarr;p · <code>bg-gray-100</code>&rarr;<code>bg-secondary</code>
+        ×2 · icônes Lucide à la place des PNG emoji</span>
+      <span class="file__t">FICHE 2 · 5</span></div>
+    <div class="file"><span class="file__p">src/components/Header.astro</span>
+      <span class="file__d"><code>text-foreground/60</code> &rarr;
+        <code>text-muted-foreground</code></span>
+      <span class="file__t">FICHE 5</span></div>
+    <div class="file"><span class="file__p">src/pages/blog/[...page].astro<br>src/pages/tags/index.astro</span>
+      <span class="file__d">Ajouter un <code>&lt;h1&gt;</code></span>
+      <span class="file__t">FICHE 2</span></div>
+    <div class="file"><span class="file__p">src/pages/blog/[...id].astro</span>
+      <span class="file__d"><code>max-w-none</code> &rarr; <code>max-w-[68ch]</code></span>
+      <span class="file__t">FICHE 3</span></div>
+    <div class="file"><span class="file__p">src/components/Callout.astro</span>
+      <span class="file__d">25 variantes &rarr; 6 familles sémantiques</span>
+      <span class="file__t">FICHE 4</span></div>
+    <div class="file"><span class="file__p">src/consts.ts</span>
+      <span class="file__d">Lien e-mail vide &rarr; <code>mailto:</code> · URL Instagram</span>
+      <span class="file__t">P1</span></div>
+    <div class="file"><span class="file__p">ThemeToggle · mobile-menu</span>
+      <span class="file__d">Zone tactile étendue à 44px via pseudo-élément</span>
+      <span class="file__t">FICHE 5</span></div>
+  </div>
+  <p class="note">Ce qui <strong>ne bouge pas</strong> : Geist en variable auto-hébergée,
+    les tokens OKLCH, la couche prose en <code>:where()</code>, le passage
+    niveaux-de-gris&rarr;couleur au survol des vignettes, l'astuce de suppression des
+    transitions du sélecteur de thème, et la palette monochrome. C'est ce qui fait que
+    le site se lit comme réfléchi — on n'y touche pas.</p>
+</section>
+
+</div>

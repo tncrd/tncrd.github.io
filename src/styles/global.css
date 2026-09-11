@@ -25,6 +25,9 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
 
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+
   --color-additive: var(--additive);
   --color-additive-foreground: var(--additive-foreground);
 
@@ -60,8 +63,10 @@
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(54.67% 0.2475 275.21);
+  --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
+  --brand: oklch(54.67% 0.2475 275.21);
+  --brand-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
@@ -77,8 +82,10 @@
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
   --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(73.85% 0.0976 284.42);
+  --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
+  --brand: oklch(73.85% 0.0976 284.42);
+  --brand-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --ring: oklch(0.556 0 0);
@@ -91,5 +98,28 @@
   ::backdrop,
   ::file-selector-button {
     @apply border-border outline-ring/50 tracking-tight;
+  }
+
+  /* Keyboard focus is the one place the brand colour always shows up. */
+  :focus-visible {
+    @apply outline-brand rounded-xs outline-2 outline-offset-2;
+  }
+}
+
+/* Keep the state changes, drop the tweening. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
   }
 }

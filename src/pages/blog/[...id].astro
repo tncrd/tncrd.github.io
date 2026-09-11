@@ -1,5 +1,6 @@
 ---
 import Breadcrumbs from '@/components/Breadcrumbs.astro'
+import StageBadge from '@/components/StageBadge.astro'
 import Link from '@/components/Link.astro'
 import PostHead from '@/components/PostHead.astro'
 import PostNavigation from '@/components/PostNavigation.astro'
@@ -56,6 +57,9 @@ const combinedReadingTime =
     : null
 
 const tocSections = await getTOCSections(currentPostId)
+const banner = post.data.banner
+const updated = post.data.updated
+const isRevised = updated && updated.valueOf() !== post.data.date.valueOf()
 ---
 
 <Layout>
@@ -110,13 +114,40 @@ const tocSections = await getTOCSections(currentPostId)
 
     {
       post.data.image && (
-        <Image
-          src={post.data.image}
-          alt={post.data.title}
-          width={1200}
-          height={630}
-          class="col-span-full mx-auto w-full max-w-5xl object-cover"
-        />
+        <figure class="col-span-full mx-auto flex w-full max-w-5xl flex-col gap-y-2">
+          <Image
+            src={post.data.image}
+            alt={
+              banner
+                ? `${banner.artwork}${banner.year ? `, ${banner.year}` : ''} — ${banner.artist}`
+                : post.data.title
+            }
+            width={1200}
+            height={630}
+            class="w-full object-cover"
+          />
+          {banner && (
+            <figcaption class="text-muted-foreground px-4 text-center text-xs text-balance">
+              <cite class="not-italic">{banner.artwork}</cite>
+              {banner.year && <span> ({banner.year})</span>}
+              <span> &middot; {banner.artist}</span>
+              {banner.source && (
+                <>
+                  {' '}
+                  &middot;{' '}
+                  <a
+                    href={banner.source}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="decoration-muted-foreground hover:decoration-foreground underline underline-offset-[3px] transition-colors"
+                  >
+                    source
+                  </a>
+                </>
+              )}
+            </figcaption>
+          )}
+        </figure>
       )
     }
 
@@ -161,10 +192,26 @@ const tocSections = await getTOCSections(currentPostId)
             )
           }
 
+          {
+            post.data.stage && (
+              <div class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0">
+                <StageBadge stage={post.data.stage} />
+              </div>
+            )
+          }
+
           <div
             class="flex w-full items-center justify-center gap-2 py-2 sm:w-fit sm:px-2 sm:py-0 first:sm:pl-0 last:sm:pr-0"
           >
-            <span>{formatDate(post.data.date)}</span>
+            {
+              isRevised ? (
+                <span title={`Published ${formatDate(post.data.date)}`}>
+                  Updated {formatDate(updated!)}
+                </span>
+              ) : (
+                <span>{formatDate(post.data.date)}</span>
+              )
+            }
           </div>
 
           <div
@@ -223,7 +270,7 @@ const tocSections = await getTOCSections(currentPostId)
       )
     }
 
-    <article class="prose col-start-2 max-w-none">
+    <article class="prose col-start-2 mx-auto max-w-[68ch]">
       <Content />
     </article>
 

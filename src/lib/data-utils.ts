@@ -16,9 +16,24 @@ export async function getAllPostsAndSubposts(): Promise<
   CollectionEntry<'blog'>[]
 > {
   const posts = await getCollection('blog')
+  const publishedIds = new Set(
+    posts.filter((post) => !post.data.draft).map((post) => post.id),
+  )
+
   return posts
-    .filter((post) => !post.data.draft)
+    .filter((post) => {
+      if (post.data.draft) return false
+      // A subpost is only public if its parent is. Otherwise it leaks as an
+      // orphan page with a broken breadcrumb and the wrong author.
+      if (isSubpost(post.id)) return publishedIds.has(getParentId(post.id))
+      return true
+    })
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+}
+
+/** Last meaningful change to a note — what a garden surfaces instead of publication date. */
+export function getLastTended(post: CollectionEntry<'blog'>): Date {
+  return post.data.updated ?? post.data.date
 }
 
 export async function getAllProjects(): Promise<CollectionEntry<'projects'>[]> {
@@ -133,7 +148,7 @@ export async function getSortedTags(): Promise<
 }
 
 export function getParentId(subpostId: string): string {
-  return subpostId.split('/')[0]
+  return subpostId.split('/').slice(0, -1).join('/')
 }
 
 export async function getSubpostsForParent(

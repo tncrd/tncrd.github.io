@@ -8,8 +8,20 @@ const blog = defineCollection({
       title: z.string(),
       description: z.string(),
       date: z.coerce.date(),
+      updated: z.coerce.date().optional(),
+      // How settled a note is. Absent means "just a post", not a garden entry.
+      stage: z.enum(['seedling', 'growing', 'evergreen']).optional(),
       order: z.number().optional(),
       image: image().optional(),
+      // Attribution for the banner artwork, rendered as a caption.
+      banner: z
+        .object({
+          artwork: z.string(),
+          artist: z.string(),
+          year: z.string().optional(),
+          source: z.string().url().optional(),
+        })
+        .optional(),
       tags: z.array(z.string()).optional(),
       authors: z.array(z.string()).optional(),
       draft: z.boolean().optional(),
