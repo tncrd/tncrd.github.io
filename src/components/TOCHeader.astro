@@ -102,6 +102,21 @@ const minDepth = getMinDepth(headings.map((h) => h.depth))
 
 <script>
   const INITIAL_OVERVIEW_TEXT = 'Overview'
+
+  // Scroll handlers read layout for every heading, which forces a reflow.
+  // Coalesce them to at most one run per animation frame.
+  function rafThrottle<T extends (...args: never[]) => void>(fn: T): () => void {
+    let queued = false
+    return () => {
+      if (queued) return
+      queued = true
+      requestAnimationFrame(() => {
+        queued = false
+        fn()
+      })
+    }
+  }
+
   // Measured, not guessed — matches TOCSidebar.
   function headerOffset(): number {
     const sticky = document.querySelector<HTMLElement>('.sticky.top-0')
@@ -340,6 +355,9 @@ const minDepth = getMinDepth(headings.map((h) => h.depth))
     }
   }
 
+  const onScroll = rafThrottle(() => MobileTOCController.handleScroll())
+  const onProgress = rafThrottle(() => ProgressCircle.update())
+
   class MobileTOCController {
     static handleScroll() {
       const newActiveIds = HeadingRegions.getVisibleIds()
@@ -372,7 +390,7 @@ const minDepth = getMinDepth(headings.map((h) => h.depth))
 
       if (state.headings.length === 0) {
         state.currentSectionText.textContent = INITIAL_OVERVIEW_TEXT
-        window.addEventListener('scroll', ProgressCircle.update, {
+        window.addEventListener('scroll', onProgress, {
           passive: true,
         })
         ProgressCircle.update()
@@ -384,13 +402,13 @@ const minDepth = getMinDepth(headings.map((h) => h.depth))
       ProgressCircle.update()
 
       MobileTOCLinks.setupInteraction()
-      window.addEventListener('scroll', this.handleScroll, { passive: true })
+      window.addEventListener('scroll', onScroll, { passive: true })
       window.addEventListener('resize', this.handleResize, { passive: true })
     }
 
     static cleanup() {
-      window.removeEventListener('scroll', this.handleScroll)
-      window.removeEventListener('scroll', ProgressCircle.update)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('scroll', onProgress)
       window.removeEventListener('resize', this.handleResize)
       state.activeIds = []
       state.headings = []
