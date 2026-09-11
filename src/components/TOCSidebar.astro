@@ -143,7 +143,12 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
 }
 
 <script>
-  const HEADER_OFFSET = 150
+  // Measured, not guessed: the sticky header's height changes between
+  // breakpoints (the mobile TOC bar only exists below xl).
+  function headerOffset(): number {
+    const sticky = document.querySelector<HTMLElement>('.sticky.top-0')
+    return (sticky?.getBoundingClientRect().height ?? 64) + 24
+  }
 
   class TOCState {
     links: NodeListOf<Element> = document.querySelectorAll(
@@ -198,7 +203,7 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
     static getVisibleIds(): string[] {
       if (state.headings.length === 0) return []
 
-      const viewportTop = window.scrollY + HEADER_OFFSET
+      const viewportTop = window.scrollY + headerOffset()
       const viewportBottom = window.scrollY + window.innerHeight
       const visibleIds = new Set<string>()
 
@@ -263,6 +268,16 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
           }
         }
       })
+
+      // Only the first visible heading is "current" — marking every visible
+      // one makes the indicator meaningless on long posts.
+      state.links.forEach((link) => link.classList.remove('toc-current'))
+      const currentLink = headingIds[0]
+        ? document.querySelector(
+            `#toc-sidebar-container [data-heading-link="${headingIds[0]}"]`,
+          )
+        : null
+      currentLink?.classList.add('toc-current')
 
       this.scrollToActive(headingIds)
     }
@@ -363,3 +378,39 @@ const parentId = isCurrentSubpost ? getParentId(currentPostId) : currentPostId
   })
   document.addEventListener('astro:before-swap', () => TOCController.cleanup())
 </script>
+
+<style>
+  #toc-sidebar-container [data-heading-link] {
+    position: relative;
+  }
+
+  #toc-sidebar-container [data-heading-link]::before {
+    content: '';
+    position: absolute;
+    left: -0.7rem;
+    top: 0.15em;
+    width: 2px;
+    height: 0;
+    border-radius: 1px;
+    background: var(--brand);
+    transition:
+      height 220ms ease,
+      opacity 220ms ease;
+    opacity: 0;
+  }
+
+  #toc-sidebar-container [data-heading-link].toc-current::before {
+    height: 1.1em;
+    opacity: 1;
+  }
+
+  #toc-sidebar-container [data-heading-link].toc-current {
+    font-weight: 500;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #toc-sidebar-container [data-heading-link]::before {
+      transition: none;
+    }
+  }
+</style>
