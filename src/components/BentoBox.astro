@@ -1,35 +1,44 @@
 ---
 interface ImageItem {
-  src: string;
-  alt: string;
-  size?: 'small' | 'medium' | 'small_upper' | 'square' | 'large';
+  src: string
+  /** Omit for decorative images — renders alt="" so screen readers skip them. */
+  alt?: string
+  size?: 'small' | 'medium' | 'small_upper' | 'square' | 'large'
 }
 
 interface Props {
-  images: ImageItem[];
+  images: ImageItem[]
 }
 
-const { images } = Astro.props;
+const { images } = Astro.props
 
-// Map size prop to Tailwind classes for grid spanning
+// Row spans only mean anything once there's more than one column, so the
+// square aspect ratio starts at the same breakpoint as the grid.
 const sizeClasses = {
-  small: 'col-span-1 row-span-1',
-  medium: 'col-span-2 row-span-1',
-  small_upper: 'col-span-1 row-span-2',
-  square: 'col-span-2 row-span-2',
-  large: 'col-span-3 row-span-2',
-};
+  small: 'sm:col-span-1 sm:row-span-1',
+  medium: 'sm:col-span-2 sm:row-span-1',
+  small_upper: 'sm:col-span-1 sm:row-span-2',
+  square: 'sm:col-span-2 sm:row-span-2',
+  large: 'sm:col-span-3 sm:row-span-2',
+}
 ---
 
-
-<div class="grid grid-cols-1 sm:grid-cols-4 gap-x-6 gap-y-1 aspect-square">
-  {images.map((image) => (
-    <div class={`rounded-md overflow-hidden ${sizeClasses[image.size || 'small']}`}>
-      <img
-        src={image.src}
-        alt={image.alt}
-        class="w-full h-full object-cover rounded-md"
-      />
-    </div>
-  ))}
+<div
+  class="grid grid-cols-1 gap-x-6 gap-y-4 sm:aspect-square sm:grid-cols-4 sm:gap-y-1"
+>
+  {
+    images.map((image) => (
+      <div
+        class={`overflow-hidden rounded-md ${sizeClasses[image.size || 'small']}`}
+      >
+        <img
+          src={image.src}
+          alt={image.alt ?? ''}
+          loading="lazy"
+          decoding="async"
+          class="aspect-[4/3] h-full w-full rounded-md object-cover sm:aspect-auto"
+        />
+      </div>
+    ))
+  }
 </div>

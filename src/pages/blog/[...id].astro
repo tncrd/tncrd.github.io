@@ -154,7 +154,7 @@ const isRevised = updated && updated.valueOf() !== post.data.date.valueOf()
     <section class="col-start-2 flex flex-col gap-y-6 text-center">
       <div class="flex flex-col">
         <h1
-          class="mb-2 scroll-mt-31 text-3xl leading-tight font-medium sm:text-4xl"
+          class="mb-2 scroll-mt-32 text-3xl leading-tight font-medium sm:text-4xl xl:scroll-mt-20"
           id="post-title"
         >
           {post.data.title}
@@ -302,7 +302,7 @@ const isRevised = updated && updated.valueOf() !== post.data.date.valueOf()
   >
     <Icon
       name="lucide:arrow-up"
-      class="mx-auto size-4 transition-all group-hover:-translate-y-0.5"
+      class="mx-auto size-4 transition-transform duration-200 group-hover:-translate-y-0.5"
     />
   </Button>
 

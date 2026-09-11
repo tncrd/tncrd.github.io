@@ -14,19 +14,19 @@ export const SITE: Site = {
 export const NAV_LINKS: SocialLink[] = [
   {
     href: '/blog',
-    label: 'blog',
+    label: 'Blog',
   },
   // {
   //   href: '/authors',
-  //   label: 'authors',
+  //   label: 'Authors',
   // },
   {
     href: '/about',
-    label: 'about',
+    label: 'About',
   },
   {
     href: '/tags',
-    label: 'areas of interest',
+    label: 'Areas of interest',
   },
 ]
 
